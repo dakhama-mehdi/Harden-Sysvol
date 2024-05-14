@@ -1,4 +1,4 @@
-Usage : 
+Utilisation : 
 
 Mettez les fichier .xml dans le dossier c:\temp
 
