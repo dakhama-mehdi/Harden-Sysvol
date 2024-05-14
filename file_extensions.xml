@@ -1,0 +1,11 @@
+<FileExtensions>
+    <Extension>*.txt</Extension>
+    <Extension>*.csv</Extension>
+    <Extension>*.docx</Extension>
+    <Extension>*.ps1</Extension>
+    <Extension>*.bat</Extension>
+    <Extension>*.ini</Extension>
+    <Extension>*.psm1</Extension>
+    <Extension>*.xml</Extension>
+    <Extension>*.vbs</Extension>
+</FileExtensions>
