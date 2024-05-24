@@ -492,21 +492,26 @@ New-HTML -TitleText 'AD_ModernReport' -ShowHTML {
           New-HTMLTabPanel -Orientation vertical -Theme 'pills' {
                     New-HTMLTab -Name 'Why check Sysvol 2.1' -IconBrands 500px {
                         New-HTMLText -FontSize 20px -Text "The Sysvol folder is crucial for distributing scripts and Group Policy Objects (GPOs) to all domain computers. 
-                        It may contain sensitive information, such as plain-text passwords, making it a prime target for attackers. <br>A vulnerability in Sysvol can compromise the entire domain. Therefore, it is essential to restrict permissions, monitor changes, and regularly audit its contents to ensure network security and compliance."
+                        It may contain sensitive information, such as plain-text passwords, making it a prime target for attackers. 
+                        <br>A vulnerability in Sysvol can compromise the entire domain. Therefore, it is essential to restrict permissions, monitor changes, 
+                        and regularly audit its contents to ensure network security and compliance."
                     }
                     New-HTMLTab -Name 'Audit GPO 2.2' -IconBrands 500px {
-                        New-HTMLText -FontSize 20px -Text "Regularly audit GPOs to verify their contents, such as plain-text passwords in configuration files or auto-logon scripts, and the presence of unsigned sources. <br>Frequently run the GPOZaurr tool, which provides a comprehensive report to help identify and mitigate these risks.
+                        New-HTMLText -FontSize 20px -Text "Regularly audit GPOs to verify their contents, such as plain-text passwords in configuration files or auto-logon scripts, 
+                        and the presence of unsigned sources. <br>Frequently run the GPOZaurr tool, which provides a comprehensive report to help identify and mitigate these risks.
                         <br>[GPOZaurr](https://github.com/EvotecIT/GPOZaurr/)<br>"
                     }
                     New-HTMLTab -Name 'Best Pratic 2.3' -IconBrands 500px {
-                        New-HTMLText -FontSize 20px -Text "Enable audits on the Sysvol folder and monitor logs for multiple search attempts, as this may indicate enumeration attempts. Some elements in the Sysvol folder are not meant to be accessed by everyone. If possible, place a honeypot script in the Netlogon folder to trigger alerts for suspicious activity.
+                        New-HTMLText -FontSize 20px -Text "Enable audits on the Sysvol folder and monitor logs for multiple search attempts, as this may indicate enumeration attempts. 
+                        Some elements in the Sysvol folder are not meant to be accessed by everyone. If possible, place a honeypot script in the Netlogon folder to trigger alerts for suspicious activity.
                         <br>[Autologon](https://learn.microsoft.com/fr-fr/sysinternals/downloads/autologon/)<br>"
                     }
                     New-HTMLTab -Name 'Tips 2.4' -IconBrands 500px {
                         New-HTMLText -FontSize 20px -Text "Do not store large files, such as ISO or .zip files, in the Sysvol folder. This can lead to replication issues and unnecessary consumption of storage resources, impacting the performance and reliability of your network<br> Move your scripts to a shared folder and grant access only to the relevant groups, not authenticated users. This will reduce vulnerabilities, especially if the scripts contain credentials or deploy critical applications."
                     }
                     New-HTMLTab -Name 'Hardening AD 2.4' -IconBrands 500px {
-                        New-HTMLText -Color Green -FontSize 10px -Text "Use AD hardening to ensure security and reduce risks. Disable old protocols like SMB1 and anonymous enumeration on DC shares. Implement an N-tier architecture model, a PAW, and Silos. 
+                        New-HTMLText -FontSize 20px -Text "Use AD hardening to ensure security and reduce risks. <br>Disable old protocols like SMB1 and anonymous enumeration on DC shares. 
+                        <br>Implement an N-tier architecture model, a PAW, and Silos. 
                         To facilitate this, refer to the HardenAD project.
                         <br>[HardenAD](https://github.com/LoicVeirman/HardenAD*/)<br>"
                     }
