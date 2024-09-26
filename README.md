@@ -10,18 +10,18 @@
 
 
 ## Description
-*Hardensysvol* is a PowerShell module designed to scan the Sysvol folder for files containing sensitive information, such as passwords, usernames, certificates, and configuration data. 
-It helps in identifying potential security risks by detecting files that may expose sensitive content, such as documents, scripts, and configuration files.
+*Hardensysvol* is a PowerShell module designed to enhance Active Directory (AD) security by analyzing and detecting threats within the Sysvol folder. It scans for sensitive keywords, identifies suspicious files, and generates a detailed HTML report for easier filtering. 
 
-The tool analyzes file integrity, flags files that require further scrutiny, and helps administrators improve the overall security of their **Active Directory** environment by ensuring that the Sysvol folder does not inadvertently expose sensitive information.
+Hardensysvol can be used for AD audits or pentesting, complementing existing solutions such as PingCastle, PurpleKnight, and GPOZaurr.
+## Key Features of Hardensysvol
 
-## Features
-- Scans the Sysvol folder for files containing sensitive data.
-- Detects potential security risks, including passwords, usernames, and configuration details.
-- Analyzes file integrity for discrepancies and unusual data patterns.
-- Supports detection of document types like `docx`, `xlsx`, `pdf`, and more.
-- Flags files for further inspection if integrity checks fail or content appears suspicious.
-- Generates detailed reports of findings, helping with the security hardening of your **Active Directory**.
+| **Feature**                         | **Description**                                                                                                      | **Supported File Types**                                                                |
+|-------------------------------------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| **Binary Comparison**               | Analyzes and compares well-known binaries with the ability to extend to additional signatures to detect suspicious files. | All binary types (EXE, DLL, etc.) with customizable signature extension.                  |
+| **Keyword Search**                  | Searches for sensitive keywords such as passwords and usernames across a wide variety of files.                      | Excel, docx, doc, ppt, bat, reg, xml, and other scripts.                                  |
+| **Certificate Verification**        | Verifies certificates protected by password or containing exportable private keys.                                    | PFX, CER, DER, PEM, P7B certificates.                                                    |
+| **Steganography**                   | Analyzes images to detect hidden files by searching for file signatures like EXE, ZIP, etc.                           | Images (JPEG, PNG, BMP, GIF, etc.) and hidden files (EXE, ZIP, RAR, 7z).                 |
+
 
 ## Requirements
 - **PowerShell**: 5.1 or higher.
