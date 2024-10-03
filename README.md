@@ -17,11 +17,10 @@ Hardensysvol can be used for AD audits or pentesting, complementing existing sol
 
 | **Feature**                         | **Description**                                                                                                      | **Supported File Types**                                                                |
 |-------------------------------------|----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| **Binary Comparison**               | Analyzes and compares well-known binaries with the ability to extend to additional signatures to detect suspicious files. | All binary types (EXE, DLL, etc.) with customizable signature extension.                  |
-| **Keyword Search**                  | Searches for sensitive keywords such as passwords and usernames across a wide variety of files.                      | Excel, docx, doc, ppt, bat, reg, xml, and other scripts.                                  |
+| **Binary Comparison**               | Analyzes and compares well-known binaries with the ability to extend to additional signatures to detect suspicious files. | All binary types (EXE, DLL, MSI, etc.) with customizable signature extension.                  |
+| **Keyword Search**                  | Searches for sensitive keywords such as passwords and usernames across a wide variety of files.                      | Pdf, docx, xlsx, doc, xls, pptx, ods, odt, odp, bat, reg, ps1, vbs, py, xml, and other scripts.                                  |
 | **Certificate Verification**        | Verifies certificates protected by password or containing exportable private keys.                                    | PFX, CER, DER, PEM, P7B certificates.                                                    |
-| **Steganography**                   | Analyzes images to detect hidden files by searching for file signatures like EXE, ZIP, etc.                           | Images (JPEG, PNG, BMP, GIF, etc.) and hidden files (EXE, ZIP, RAR, 7z).                 |
-
+| **Steganography**                   | Analyzes images to detect hidden files by searching for file signatures like EXE, ZIP, etc.                           | Images (JPEG, PNG, BMP, GIF, etc.) and hidden files (EXE, MSI, ZIP, RAR, 7z).                 |
 
 ## Requirements
 - **PowerShell**: 5.1 or higher.
@@ -33,5 +32,10 @@ Hardensysvol can be used for AD audits or pentesting, complementing existing sol
 ### Install via PowerShell Gallery
 To install directly from PowerShell Gallery, run:
 
-```powershell
+### Magic number default check : 
+doc, xls, msi, ppt, vsd, docx, xlsx, pptx, odp, ods, jar, odt, zip, ott, vsdx, exe, dll, rar, zip, 7z, png, pdf, jpg, jpeg, gif, tif, ico, class, msu, cab, bmp, p7b, p7c, cer, pfx, der, pem, p7b, otf, webp, mp3, gz, tar, jp2, rtf
+### Default extensions support  : 
+bat, bmp, cab, class, csproj, config, csv, cer, der, doc, docx, dll, exe, gif, gz, html, ico, ini, jar, jpg, jpeg, jp2, msi, msu, mp3, odp, ods, odt, otf, ott, p7b, p7c, pdf, pfx, png, pol, pptx, ppt, py, ps1, psm1, rar, rdp, reg, rtf, tar, tif, txt, vbs, xls, xlsx, xml, vbsx, webp, zip, 7z
+### Default pattern check : 
+accesskey, auth, credentials, cred, identifiant, mdp, mdpass, motdepasse, private-key, pwd, secret, ssh-key, token, login, apikey, password, securestring, SHA-1, SHA-256, SHA-512, net user
 
