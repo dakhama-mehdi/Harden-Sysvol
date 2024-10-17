@@ -3,6 +3,8 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
 ![Status: In Progress](https://img.shields.io/badge/Status-In%20Progress-orange)
+![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
+![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
 
 ## 🚧 Project Status: In Progress
 
