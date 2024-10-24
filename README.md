@@ -5,15 +5,9 @@
 ![Status: In Progress](https://img.shields.io/badge/Status-In%20Progress-orange)
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
-## Support This project
 
-<a href="https://www.paypal.com/paypalme/mdunca13" target="_blank">
-<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="Soutenir avec PayPal">
-</a>
+### Support This Project : ☕❤️ <a href="https://www.paypal.com/paypalme/mdunca13" target="_blank">Support via PayPal</a>
 
-<a href="https://www.buymeacoffee.com/dakhama_mehdi" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Achetez-moi un café" style="height: 60px !important;width: 217px !important;">
-</a>
 
 ## 🚧 Project Status: In Progress
 
