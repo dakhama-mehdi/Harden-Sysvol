@@ -5,6 +5,12 @@
 ![Status: In Progress](https://img.shields.io/badge/Status-In%20Progress-orange)
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
+## Supporter le projet
+
+Si vous trouvez HardenSysvol utile et souhaitez soutenir le projet, vous pouvez faire un don via PayPal :
+
+[![Soutenir avec PayPal](https://www.paypalobjects.com/webstatic/en_US/i/buttons/blue-rect-paypal-34px.png)](https://www.paypal.com/paypalme/mdunca13)
+
 
 ## 🚧 Project Status: In Progress
 
