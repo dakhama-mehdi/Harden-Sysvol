@@ -32,9 +32,14 @@ Hardensysvol can be used for AD audits or pentesting, complementing existing sol
 - **Compatibility**: Works with Windows Server environments and Windows 10/11
 
 ## Installation
-
-### Install via PowerShell Gallery
-To install directly from PowerShell Gallery, run:
+To install Run the following command in PowerShell:
+```powershell
+Install-Module -Name HardenSysvol -Scope CurrentUser -Force
+````
+### To launch the scan
+```powershell
+Invoke-HardenSysvol
+````
 
 ### Magic number default check : 
 doc, xls, msi, ppt, vsd, docx, xlsx, pptx, odp, ods, jar, odt, zip, ott, vsdx, exe, dll, rar, zip, 7z, png, pdf, jpg, jpeg, gif, tif, ico, class, msu, cab, bmp, p7b, p7c, cer, pfx, der, pem, p7b, otf, webp, mp3, gz, tar, jp2, rtf
