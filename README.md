@@ -30,7 +30,7 @@ Hardensysvol can be used for AD audits or pentesting, complementing existing sol
 - **Permissions**: The tool can be run by any standard account on the domain.
 - **Compatibility**: Works with Windows Server environments and Windows 10/11
 
-## Installation
+## Installation from Powershell Gallery
 To install Run the following command in PowerShell:
 ```powershell
 Install-Module -Name HardenSysvol -Scope CurrentUser -Force
