@@ -1,4 +1,4 @@
-# Hardensysvol - Ensure the security of your AD
+# HardenSysvol: Scan Sysvol Vulnerabilities in Active Directory
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
@@ -10,11 +10,10 @@
 
 ## 🚧 Project Status: In Progress
 
-⚠️ **This project is currently under construction**. Features may change, and some functionality might be incomplete. Please feel free to test it and report any issues or suggestions as we continue to improve it.
-
-
 ## Description
 *Hardensysvol* is a PowerShell module designed to enhance Active Directory (AD) security by analyzing and detecting threats within the Sysvol folder. It scans for sensitive keywords, identifies suspicious files, and generates a detailed HTML report for easier filtering. 
+
+Easy to use, with only two commands to install and run scans supporting over 50 extensions, binary checks for more than 40 types, and more.
 
 Hardensysvol can be used for AD audits or pentesting, complementing existing solutions such as PingCastle, PurpleKnight, and GPOZaurr.
 ## Key Features of Hardensysvol
