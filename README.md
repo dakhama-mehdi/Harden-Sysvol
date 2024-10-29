@@ -17,7 +17,7 @@ Easy to use, with only two commands to install and run scans supporting over 50 
 
 Hardensysvol can be used for AD audits or pentesting, complementing existing solutions such as PingCastle, PurpleKnight, and GPOZaurr.
 
-<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_1.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
+<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
 
 ## Key Features of Hardensysvol
 
