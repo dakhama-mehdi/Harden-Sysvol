@@ -60,11 +60,13 @@ Invoke-HardenSysvol -Allextensions
 | DnsDomain      | Targets a specific child domain or Domain Controller (DC).                                                | `-Dnsdomain dc-2` or `-Dnsdomain domain.local` |
 | Custompatterns | Allows the use of a custom pattern file, as long as it follows the original .xml format.                  | `-Custompatterns C:\temp\custom.xml`            |
 
+The following file types, extensions, and patterns are checked by default for integrity and sensitive information:
 
-### Magic number default check : 
-doc, xls, msi, ppt, vsd, docx, xlsx, pptx, odp, ods, jar, odt, zip, ott, vsdx, exe, dll, rar, zip, 7z, png, pdf, jpg, jpeg, gif, tif, ico, class, msu, cab, bmp, p7b, p7c, cer, pfx, der, pem, p7b, otf, webp, mp3, gz, tar, jp2, rtf
-### Default extensions support  : 
-bat, bmp, cab, class, csproj, config, csv, cer, der, doc, docx, dll, exe, gif, gz, html, ico, ini, jar, jpg, jpeg, jp2, msi, msu, mp3, odp, ods, odt, otf, ott, p7b, p7c, pdf, pfx, png, pol, pptx, ppt, py, ps1, psm1, rar, rdp, reg, rtf, tar, tif, txt, vbs, xls, xlsx, xml, vbsx, webp, zip, 7z
-### Default pattern check : 
-accesskey, auth, credentials, cred, identifiant, mdp, mdpass, motdepasse, private-key, pwd, secret, ssh-key, token, login, apikey, password, securestring, SHA-1, SHA-256, SHA-512, net user
+| Category                  | Details                                                                                                                           |
+|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| **Magic Numbers**         | `doc`, `xls`, `msi`, `ppt`, `vsd`, `docx`, `xlsx`, `pptx`, `odp`, `ods`, `jar`, `odt`, `zip`, `ott`, `vsdx`, `exe`, `dll`, `rar`, `zip`, `7z`, `png`, `pdf`, `jpg`, `jpeg`, `gif`, `tif`, `ico`, `class`, `msu`, `cab`, `bmp`, `p7b`, `p7c`, `cer`, `pfx`, `der`, `pem`, `otf`, `webp`, `mp3`, `gz`, `tar`, `jp2`, `rtf` |
+| **Default Extensions**    | `bat`, `bmp`, `cab`, `class`, `csproj`, `config`, `csv`, `cer`, `der`, `doc`, `docx`, `dll`, `exe`, `gif`, `gz`, `html`, `ico`, `ini`, `jar`, `jpg`, `jpeg`, `jp2`, `msi`, `msu`, `mp3`, `odp`, `ods`, `odt`, `otf`, `ott`, `p7b`, `p7c`, `pdf`, `pfx`, `png`, `pol`, `pptx`, `ppt`, `py`, `ps1`, `psm1`, `rar`, `rdp`, `reg`, `rtf`, `tar`, `tif`, `txt`, `vbs`, `xls`, `xlsx`, `xml`, `vbsx`, `webp`, `zip`, `7z` |
+| **Default Pattern Check** | `accesskey`, `auth`, `credentials`, `cred`, `identifiant`, `mdp`, `mdpass`, `motdepasse`, `private-key`, `pwd`, `secret`, `ssh-key`, `token`, `login`, `apikey`, `password`, `securestring`, `SHA-1`, `SHA-256`, `SHA-512`, `net user` |
+
+
 
