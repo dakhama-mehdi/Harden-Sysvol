@@ -42,6 +42,24 @@ Install-Module -Name HardenSysvol -Scope CurrentUser -Force
 ```powershell
 Invoke-HardenSysvol
 ````
+### Frequently Used Example
+```powershell
+Invoke-HardenSysvol -Addpattern admin -Addextension adml,admx,adm
+Invoke-HardenSysvol -Allextensions
+````
+
+### Parameters
+
+| Parameter      | Explanation                                                                                               | Example                                         |
+|----------------|-----------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| Addpattern     | Adds custom keywords to search for that are not present by default.                                       | `-Addpattern admins,@mydomain,hack`             |
+| Removepattern  | Removes a keyword from the default search list.                                                           | `-Removepattern ipv4,sha1,password`             |
+| Addextension   | Adds an additional file extension to include in the search.                                               | `-Addextension adml,admx,adm`                   |
+| Ignoreextension| Excludes a default extension from the search.                                                             | `-Ignoreextension pdf,bat,ps1`                  |
+| Allextensions  | Scans all file types without any exceptions.                                                              | `-Allextensions`                                |
+| DnsDomain      | Targets a specific child domain or Domain Controller (DC).                                                | `-Dnsdomain dc-2` or `-Dnsdomain domain.local` |
+| Custompatterns | Allows the use of a custom pattern file, as long as it follows the original .xml format.                  | `-Custompatterns C:\temp\custom.xml`            |
+
 
 ### Magic number default check : 
 doc, xls, msi, ppt, vsd, docx, xlsx, pptx, odp, ods, jar, odt, zip, ott, vsdx, exe, dll, rar, zip, 7z, png, pdf, jpg, jpeg, gif, tif, ico, class, msu, cab, bmp, p7b, p7c, cer, pfx, der, pem, p7b, otf, webp, mp3, gz, tar, jp2, rtf
