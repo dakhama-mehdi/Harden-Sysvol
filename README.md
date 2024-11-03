@@ -6,7 +6,7 @@
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
 
-### Support This Project : ❤️<a href="https://www.paypal.com/paypalme/mdunca13" target="_blank">/paypalme/mdunca13</a>☕
+Support this project ❤️ [PayPal](https://www.paypal.com/paypalme/mdunca13)
 
 ## 🚧 Project Status: In Progress
 
