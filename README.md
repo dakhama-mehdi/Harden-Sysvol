@@ -27,6 +27,8 @@ Hardensysvol can be used for AD audits or pentesting, complementing existing sol
 | **Keyword Search**                  | Searches for sensitive keywords such as passwords and usernames across a wide variety of files.                      | Pdf, docx, xlsx, doc, xls, pptx, ods, odt, odp, bat, reg, ps1, vbs, py, xml, and other scripts.                                  |
 | **Certificate Verification**        | Verifies certificates protected by password or containing exportable private keys.                                    | PFX, CER, DER, PEM, P7B certificates.                                                    |
 | **Steganography**                   | Analyzes images to detect hidden files by searching for file signatures like EXE, ZIP, etc.                           | Images (JPEG, PNG, BMP, GIF, etc.) and hidden files (EXE, MSI, ZIP, RAR, 7z).                 |
+| **File Signature Verification**     | Verifies file signatures for security compliance, including detection of password-protected ZIP files.              | MSI, EXE, DLL, JAR, MSU, CAB, and ZIP (password-protected).                                 |
+
 
 ## Requirements
 - **PowerShell**: 5.1 or higher.
@@ -64,9 +66,9 @@ The following file types, extensions, and patterns are checked by default for in
 
 | Category                  | Details                                                                                                                           |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| **Magic Numbers**         | `doc`, `xls`, `msi`, `ppt`, `vsd`, `docx`, `xlsx`, `pptx`, `odp`, `ods`, `jar`, `odt`, `zip`, `ott`, `vsdx`, `exe`, `dll`, `rar`, `zip`, `7z`, `png`, `pdf`, `jpg`, `jpeg`, `gif`, `tif`, `ico`, `class`, `msu`, `cab`, `bmp`, `p7b`, `p7c`, `cer`, `pfx`, `der`, `pem`, `otf`, `webp`, `mp3`, `gz`, `tar`, `jp2`, `rtf` |
-| **Default Extensions**    | `bat`, `bmp`, `cab`, `class`, `csproj`, `config`, `csv`, `cer`, `der`, `doc`, `docx`, `dll`, `exe`, `gif`, `gz`, `html`, `ico`, `ini`, `jar`, `jpg`, `jpeg`, `jp2`, `msi`, `msu`, `mp3`, `odp`, `ods`, `odt`, `otf`, `ott`, `p7b`, `p7c`, `pdf`, `pfx`, `png`, `pol`, `pptx`, `ppt`, `py`, `ps1`, `psm1`, `rar`, `rdp`, `reg`, `rtf`, `tar`, `tif`, `txt`, `vbs`, `xls`, `xlsx`, `xml`, `vbsx`, `webp`, `zip`, `7z` |
-| **Default Pattern Check** | `accesskey`, `auth`, `credentials`, `cred`, `identifiant`, `mdp`, `mdpass`, `motdepasse`, `private-key`, `pwd`, `secret`, `ssh-key`, `token`, `login`, `apikey`, `password`, `securestring`, `SHA-1`, `SHA-256`, `SHA-512`, `net user` |
+| **Magic Numbers**         | `doc`, `xls`, `msi`, `ppt`, `vsd`, `docx`, `xlsx`, `pptx`, `odp`, `ods`, `jar`, `odt`, `zip`, `ott`, `vsdx`, `exe`, `dll`, `rar`, `zip`, `7z`, `png`, `pdf`, `jpg`, `jpeg`, `gif`, `tif`, `ico`, `class`, `msu`, `cab`, `bmp`, `p7b`, `p7c`, `cer`, `pfx`, `der`, `pem`, `otf`, `webp`, `mp3`, `gz`, `tar`, `jp2`, `rtf`,`db`,`kdbx` |
+| **Default Extensions**    | `bat`, `bmp`, `cab`, `class`, `csproj`, `config`, `csv`, `cer`, `der`, `doc`, `docx`, `dll`, `exe`, `gif`, `gz`, `html`, `ico`, `ini`, `jar`, `jpg`, `jpeg`, `jp2`, `msi`, `msu`, `mp3`, `odp`, `ods`, `odt`, `otf`, `ott`, `p7b`, `p7c`, `pdf`, `pfx`, `png`, `pol`, `pptx`, `ppt`, `py`, `ps1`, `psm1`, `rar`, `rdp`, `reg`, `rtf`, `tar`, `tif`, `txt`, `vbs`, `xls`, `xlsx`, `xml`, `vbsx`, `webp`, `zip`, `7z`,`kdb` ,`db`  |
+| **Default Pattern Check** | `accesskey`, `auth`, `credentials`, `cred`, `identifiant`, `mdp`, `mdpass`, `motdepasse`, `private-key`, `pwd`, `secret`, `ssh-key`, `token`, `login`, `apikey`, `password`, `securestring`, `md5`,`SHA-1`, `SHA-256`, `SHA-512`, `net user`,`ipv4` |
 
 
 
