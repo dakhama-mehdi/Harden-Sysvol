@@ -12,8 +12,10 @@ Support this project ❤️ [PayPal](https://www.paypal.com/paypalme/mdunca13)
 ## 🚧 Project Status: In Progress
 
 ## Description
-*HardenSysvol* is free PowerShell Module designed to quickly scan one of Active Directory's most critical folders, Sysvol, with just one command, no major prerequisites, and no elevated rights. It detects suspicious binaries from over 180 standard extensions, identifies vulnerabilities, and searches for default or custom keywords. 
-This tool complements audit solutions like PurpleKnight, PingCastle, and GPOZaurr by offering deeper insights into Sysvol content often overlooked by other tools. HardenSysvol is ideal for AD audits and pentesting.
+HardenSysvol is a free PowerShell module designed to quickly scan one of Active Directory's most critical folders, Sysvol, with just one command, no major prerequisites, and no elevated rights. It operates in read-only mode (safemode), ensuring no modifications are made to the system. 
+It detects suspicious binaries from over 180 standard extensions, identifies vulnerabilities, and searches for both default and custom keywords.
+
+This tool complements audit solutions like PurpleKnight, PingCastle, and GPOZaurr by offering deeper insights into Sysvol content, often overlooked by other tools. HardenSysvol is ideal for AD audits and pentesting.
 
 <a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
 
@@ -60,7 +62,12 @@ Invoke-HardenSysvol -Allextensions
 | DnsDomain      | Targets a specific child domain or Domain Controller (DC).                                                | `-Dnsdomain dc-2` or `-Dnsdomain domain.local` |
 | Custompatterns | Allows the use of a custom pattern file, as long as it follows the original .xml format.                  | `-Custompatterns C:\temp\custom.xml`            |
 
-The following file types, extensions, and patterns are checked by default for integrity and sensitive information:
+## How It Works
+HardenSysvol first analyzes the shared folders on the Domain Controller where it is run, or on a specified target defined by parameters. For each file, it checks against a list of 180 default extensions. If a file, such as a .doc file, is renamed to .exe (or vice versa), it will trigger an error, making it difficult for suspicious files to bypass detection.
+
+The tool also performs keyword searches within scripts, inspects certificate signatures, and identifies hidden files embedded in images. This multi-layered analysis helps uncover vulnerabilities that might otherwise be overlooked, providing administrators with comprehensive security insights.
+
+## Default file types, extensions, and patterns
 
 | Category                  | Details                                                                                                                           |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
