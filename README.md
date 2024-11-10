@@ -75,5 +75,17 @@ The tool also performs keyword searches within scripts, inspects certificate sig
 | **Default Pattern Check** | `accesskey`, `auth`, `credentials`, `cred`, `identifiant`, `mdp`, `mdpass`, `motdepasse`, `private-key`, `pwd`, `secret`, `ssh-key`, `token`, `login`, `apikey`, `password`, `securestring`, `md5`,`SHA-1`, `SHA-256`, `SHA-512`, `net user`,`ipv4` |
 | **Magic Numbers**         | "doc", "xls", "msi", "ppt", "vsd", "db", "msg", "xla", "apr", "dot", "suo","epub", "docx", "xlsx", "pptx", "odp", "ods", "jar","odt", "zip", "ott","vsdx", "xps", "kmz", "kwd", "oxps", "sxc", "sxd", "sxi", "sxw", "xpi","msix", "exe", "bin", "dll", "IDX_DLL", "sys", "tlb", "ocx", "olb", "odf","rll", "rar", "7z", "png", "pdf", "jpg", "jpeg", "gif", "tif", "ico","class", "msu", "cab", "bmp", "p7b", "p7c", "p7s", "cer", "pfx", "der","pem", "otf", "webp", "avi", "wav", "tar", "jp2", "kdb", "kdbx", "rtf","mpg", "mpeg", "mp4", "ogg", "flac", "mkv", "webm", "vmdk", "pst", "mdb","eps", "sln", "123", "ttf", "tgz", "gz", "hqx", "mxf", "oga", "ogv", "ogx","p10", "ai", "fdf", "msf", "fm", "tpl", "wk4", "wk3", "wk1", "nsf", "ntf","org", "lwp", "sam", "mif", "asf", "wma", "wmv", "chm", "wks", "qxd", "mmf","cap", "dmp", "wpd", "xar", "spf", "dtd", "amr","au", "m4a", "koz", "mp3","fits", "tiff", "psd", "dwg", "hdr", "wmf", "eml", "vcf", "dms", "3g2",    "3gp", "m4v", "mov", "cpt", "vcd", "csh", "rpm", "swf", "sit", "xz", "mid",    "midi", "aiff", "ram", "rm", "ra", "pgm", "sqlite", "rgb" |
 
+## Credits
+This project makes use of [PSWriteOffice](https://github.com/EvotecIT/PSWriteOffice), which provides essential functionality for read/write office.
+Special thanks to the contributors of [HardenAD community](https://hardenad.net/) for their work and dedication.
+
+## Licence
+License Inheritance from PsWritePDF
+This project inherits its licensing from PsWritePDF due to the inclusion of [iText 7 Community for .NET](https://github.com/itext/itext-dotnet), which is licensed under AGPLv3. If PsWritePDF were to be replaced with a different PDF library, we could consider a different licensing approach. However, as long as this project remains open-source and free, the AGPLv3 requirements should not present issues.
+
+Please review the following resources from the PsWritePDF project and the AGPLv3 license for a thorough understanding of these terms before duplicating or using this code:
+
+PsWritePDF Project [link](https://github.com/EvotecIT/PSWritePDF)
+AGPLv3 License Overview
 
 
