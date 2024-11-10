@@ -1,6 +1,6 @@
 # HardenSysvol: Inspect AD Sysvol Vulnerabilities in Under 5 Minutes
 
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
 ![Status: In Progress](https://img.shields.io/badge/Status-In%20Progress-orange)
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
