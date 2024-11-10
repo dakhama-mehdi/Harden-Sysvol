@@ -86,6 +86,7 @@ This project follows the AGPLv3 license due to its use of PsWritePDF, which reli
 Before duplicating or using this code, please review the following resources to understand the terms of this license:
 
 [PsWritePDF Project](https://github.com/EvotecIT/PSWritePDF)
+
 AGPLv3 License Overview
 
 
