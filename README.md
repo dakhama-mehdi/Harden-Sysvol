@@ -77,15 +77,15 @@ The tool also performs keyword searches within scripts, inspects certificate sig
 
 ## Credits
 This project makes use of [PSWriteOffice](https://github.com/EvotecIT/PSWriteOffice), which provides essential functionality for read/write office.
+
 Special thanks to the contributors of [HardenAD community](https://hardenad.net/) for their work and dedication.
 
 ## Licence
-License Inheritance from PsWritePDF
-This project inherits its licensing from PsWritePDF due to the inclusion of [iText 7 Community for .NET](https://github.com/itext/itext-dotnet), which is licensed under AGPLv3. If PsWritePDF were to be replaced with a different PDF library, we could consider a different licensing approach. However, as long as this project remains open-source and free, the AGPLv3 requirements should not present issues.
+This project follows the AGPLv3 license due to its use of PsWritePDF, which relies on iText 7 Community for .NET under AGPLv3. If PsWritePDF were replaced by another PDF library with a more permissive license, such as MIT, we could adopt a different licensing model. For now, as long as this project remains open-source and free, the AGPLv3 requirements should not pose any issues.
 
-Please review the following resources from the PsWritePDF project and the AGPLv3 license for a thorough understanding of these terms before duplicating or using this code:
+Before duplicating or using this code, please review the following resources to understand the terms of this license:
 
-PsWritePDF Project [link](https://github.com/EvotecIT/PSWritePDF)
+[PsWritePDF Project](https://github.com/EvotecIT/PSWritePDF)
 AGPLv3 License Overview
 
 
