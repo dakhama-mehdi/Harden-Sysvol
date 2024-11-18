@@ -12,10 +12,8 @@ Support this project ❤️ [PayPal](https://www.paypal.com/paypalme/mdunca13)
 ## 🚧 Project Status: In Progress
 
 ## Description
-HardenSysvol is a free PowerShell module designed to quickly scan one of Active Directory's most critical folders, Sysvol, with just one command, no major prerequisites, and no elevated rights. It operates in read-only mode (safemode), ensuring no modifications are made to the system. 
-It detects suspicious binaries from over 180 standard extensions, identifies vulnerabilities, and searches for both default and custom keywords.
-
-This tool complements audit solutions like PurpleKnight, PingCastle, and GPOZaurr by offering deeper insights into Sysvol content, often overlooked by other tools. HardenSysvol is ideal for AD audits and pentesting.
+HardenSysvol is an open-source tool by the HardenAD Community, designed to be ready-to-use, simple, and with no prerequisites. It complements Active Directory audits by focusing on GPOs, scripts, and Sysvol content.
+Capable of detecting sensitive data across 40+ extensions (e.g., scripts, DOC, PDF), it also identifies suspicious binaries among 180+ file types. Additionally, it inspects certificates, hidden binaries within images, encrypted ZIP files, and more, providing comprehensive security insights.
 
 <a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
 
