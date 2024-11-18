@@ -6,10 +6,8 @@
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
 
-## 🚧 Project Status: In Progress
-
 ## Description
-HardenSysvol is an open-source tool developed by the HardenAD Community to complement Active Directory audit tools by analyzing GPOs and scripts within the Sysvol folder. It is ready-to-use, easy to deploy, and requires no complex configurations (no elevated privileges or EDR deactivation needed).
+HardenSysvol is an open-source tool developed by the HardenAD Community to complement Active Directory audit tools by analyzing GPOs and scripts on Sysvol folder. It is ready-to-use, easy to deploy, and requires no complex configurations (no elevated privileges or EDR deactivation needed).
 
 It detects sensitive data across 40+ extensions (e.g., scripts, documents, PDFs) and identifies suspicious binaries among 180+ extensions. The tool also inspects certificates, hidden binaries within images, encrypted ZIP files, and more.
 
