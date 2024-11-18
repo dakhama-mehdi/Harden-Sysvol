@@ -1,4 +1,4 @@
-# HardenSysvol: Audit Active Directory GPO Script Vulnerabilities
+# HardenSysvol: Audit Active Directory GPOs Scripts Vulnerabilities
 
 ![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
