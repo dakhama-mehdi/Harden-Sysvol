@@ -1,0 +1,394 @@
+{   
+  "magic_numbers": [
+    {
+      "magic": ["D0CF11E0A1B11AE1"],
+      "extensions": ["doc", "xls", "msi", "ppt", "vsd", "db", "msg","xla","apr","dot","suo"]
+    },
+	{
+      "magic": ["504B03040A000200"],
+      "extensions": ["epub"]
+    },
+    {
+      "magic": ["504B0304140000", "504B0304"],
+      "extensions": ["docx","xlsx","pptx","odp","ods","jar","odt","zip","ott","vsdx","xps","kmz","kwd","oxps","sxc","sxd","sxi","sxw","xpi","msix"]
+    },	
+    {
+      "magic": ["4D5A","4D5A90000300000004000000FFFF0000"], 
+	  "offset": [[3, "00"], [21, "0000004000"]],
+      "extensions": ["exe","bin","dll","IDX_DLL","sys","tlb","ocx","olb","odf","rll"]
+    },
+	{
+      "magic": ["4D53465402000100"],
+      "extensions": ["tlb"]
+    },
+    {
+      "magic": ["526172211A0700","526172211A070100","526172211A"],
+      "extensions": ["rar"]
+    },
+    {
+      "magic": ["377ABCAF271C","377ABCAF271C0004"],
+      "extensions": ["zip", "7z"]
+    },
+    {
+      "magic": ["89504E470D0A1A0A"],
+      "extensions": ["png"]
+    },
+    {
+      "magic": ["25504446"],
+      "extensions": ["pdf"]
+    },
+    {
+      "magic": ["FFD8"],
+      "extensions": ["jpg", "jpeg"]
+    },
+    {
+      "magic": ["474946"],
+      "extensions": ["gif"]
+    },
+    {
+      "magic": ["49492A"],
+      "extensions": ["tif"]
+    },
+    {
+      "magic": ["00000100"],
+      "extensions": ["ico"]
+    },
+    {
+      "magic": ["CAFEBABE"],
+      "extensions": ["class"]
+    },
+    {
+      "magic": ["49536328", "4D53434600000000"],
+      "extensions": ["msu", "cab"]
+    },
+    {
+      "magic": ["424D"],
+	  "offset": [[14, "7C00"], [14, "28000000"]],
+	  "extensions": ["bmp"]
+    },
+    {
+      "magic": ["3082"],
+      "offset": [4, "0609"],
+      "extensions": ["p7b", "p7c", "p7s"]
+    },
+    {
+      "magic": ["3082", "2D2D2D2D2D424547"],
+      "extensions": ["cer", "pfx", "der", "pem", "p7b"]
+    },
+    {
+      "magic": ["4F54544F00"],
+      "extensions": ["otf"]
+    },
+    {
+      "magic": ["52494646"],
+	  "offset": [[8, "57454250"], [8, "57454250"], [8, "57415645"]],
+      "extensions": ["webp","avi","wav"]
+    },
+    {
+      "magic": ["7573746172"],
+      "extensions": ["tar"]
+    },
+    {
+      "magic": ["0000000C6A5020200D0A4"],
+      "extensions": ["jp2"]
+    },
+    {
+      "magic": ["03D9A29A"],
+      "offset": [[5, "FB4BB5"]],
+      "extensions": ["kdb", "kdbx"]
+    },
+    {
+      "magic": ["7B5C72746631"],
+      "extensions": ["rtf"]
+    },
+    {
+      "magic": ["000001BA", "000001B3"],
+      "extensions": ["mpg", "mpeg"]
+    },
+    {
+      "magic": ["00000020667479706D703432"],
+      "extensions": ["mp4"]
+    },
+    {
+      "magic": ["4F676753"],
+      "extensions": ["ogg"]
+    },
+    {
+      "magic": ["664C6143"],
+      "extensions": ["flac"]
+    },
+    {
+      "magic": ["1A45DFA3"],
+      "extensions": ["mkv", "webm"]
+    },
+    {
+      "magic": ["4B444D56"],
+      "extensions": ["vmdk"]
+    },
+    {
+      "magic": ["2142444E42"],
+      "extensions": ["pst"]
+    },
+    {
+      "magic": ["5374616E64617264204A6574"],
+      "extensions": ["mdb"]
+    },
+    {
+      "magic": ["252150532D41646F62652D332E3020455053462D"],
+      "extensions": ["eps"]
+    },
+    {
+      "magic": ["4D6963726F736F66742056697375616C20537475"],
+      "extensions": ["sln"]
+    },
+	    {
+      "magic": ["00001A00051004"],
+      "extensions": ["123"]
+    },
+    {
+      "magic": ["0001000000"],
+      "extensions": ["ttf"]
+    },
+    {
+      "magic": ["1F8B08"],
+      "extensions": ["tgz", "gz"]
+    },
+    {
+      "magic": ["28546869732066696C65206D757374"],
+      "extensions": ["hqx"]
+    },
+    {
+      "magic": ["060E2B34020501010D0102010102", "3C435472616E7354696D656C696E653E"],
+      "extensions": ["mxf"]
+    },
+    {
+      "magic": ["4F67675300020000000000000000"],
+      "extensions": ["oga", "ogv", "ogx"]
+    },
+    {
+      "magic": ["64000000"],
+      "extensions": ["p10"]
+    },
+    {
+      "magic": ["25504446"],
+      "extensions": ["ai", "fdf", "pdf"]
+    },
+    {
+      "magic": ["2F2F203C212D2D203C6D64623A6D6F726B3A7A"],
+      "extensions": ["msf"]
+    },
+    {
+      "magic": ["3C4D616B657246696C6520"],
+      "extensions": ["fm"]
+    },
+    {
+      "magic": ["0020AF30", "6D7346696C7465724C697374"],
+      "extensions": ["tpl"]
+    },
+    {
+      "magic": ["00001A000210040000000000"],
+      "extensions": ["wk4"]
+    },
+    {
+      "magic": ["00001A000010040000000000"],
+      "extensions": ["wk3"]
+    },
+    {
+      "magic": ["0000020006040600080000000000"],
+      "extensions": ["wk1"]
+    },
+    {
+      "magic": ["1A0000040000", "4E45534D1A01"],
+      "extensions": ["nsf"]
+    },
+    {
+      "magic": ["1A0000", "30314F52444E414E434520535552564559", "4E49544630"],
+      "extensions": ["ntf"]
+    },
+    {
+      "magic": ["414F4C564D313030"],
+      "extensions": ["org"]
+    },
+    {
+      "magic": ["576F726450726F"],
+      "extensions": ["lwp"]
+    },
+    {
+      "magic": ["5B50686F6E655D"],
+      "extensions": ["sam"]
+    },
+    {
+      "magic": ["3C4D616B657246696C6520", "56657273696F6E20"],
+      "extensions": ["mif"]
+    },
+    {
+      "magic": ["3026B2758E66CF11A6D900AA0062CE6C"],
+      "extensions": ["asf", "wma", "wmv"]
+    },
+    {
+      "magic": ["49545346"],
+      "extensions": ["chm"]
+    },
+    {
+      "magic": ["0E574B53", "FF000200040405540200"],
+      "extensions": ["wks"]
+    },
+    {
+      "magic": ["00004D4D585052"],
+      "extensions": ["qxd"]
+    },
+    {
+      "magic": ["4D4D4D440000"],
+      "extensions": ["mmf"]
+    },
+    {
+      "magic": ["52545353", "58435000"],
+      "extensions": ["cap"]
+    },
+    {
+      "magic": ["4D444D5093A7", "5041474544553634", "5041474544554D50"],
+      "extensions": ["dmp"]
+    },
+    {
+      "magic": ["FF575043"],
+      "extensions": ["wpd"]
+    },
+    {
+      "magic": ["78617221"],
+      "extensions": ["xar"]
+    },
+    {
+      "magic": ["5350464900"],
+      "extensions": ["spf"]
+    },
+    {
+      "magic": ["0764743264647464"],
+      "extensions": ["dtd"]
+    },
+    {
+      "magic": ["2321414D52"],
+      "extensions": ["amr"]
+    },
+    {
+      "magic": ["2E736E64", "646E732E"],
+      "extensions": ["au"]
+    },
+    {
+      "magic": ["00000020667479704D344120"],
+      "extensions": ["m4a"]
+    },
+    {
+      "magic": ["49443303000000", "494433"],
+      "extensions": ["koz", "mp3"]
+    },
+    {
+      "magic": ["53494D504C4520203D202020202020202"],
+	  "offset": [[17, "020202020202020202020202054"]],	  
+      "extensions": ["fits"]
+    },
+    {
+      "magic": ["492049", "49492A00", "4D4D002A", "4D4D002B"],
+      "extensions": ["tiff"]
+    },
+    {
+      "magic": ["38425053"],
+      "extensions": ["psd"]
+    },
+    {
+      "magic": ["41433130"],
+      "extensions": ["dwg"]
+    },
+    {
+      "magic": ["233F52414449414E43450A", "49536328"],
+      "extensions": ["hdr"]
+    },
+    {
+      "magic": ["010009000003", "D7CDC69A"],
+      "extensions": ["wmf"]
+    },
+    {
+      "magic": ["46726F6D3A20", "52657475726E2D506174683A20", "582D"],
+      "extensions": ["eml"]
+    },
+    {
+      "magic": ["424547494E3A56434152440D0A"],
+      "extensions": ["vcf"]
+    },
+    {
+      "magic": ["444D5321"],
+      "extensions": ["dms"]
+    },
+    {
+      "magic": ["0000001466747970336770", "0000002066747970336770"],
+      "extensions": ["3g2", "3gp"]
+    },
+    {
+      "magic": ["00000018667479706D703432", "00000020667479704D345620"],
+      "extensions": ["m4v"]
+    },
+    {
+      "magic": ["000000146674797071742020"],
+      "extensions": ["mov"]
+    },
+    {
+      "magic": ["4350543746494C45", "43505446494C45"],
+      "extensions": ["cpt"]
+    },
+    {
+      "magic": ["454E5452595643440200000102001858"],
+      "extensions": ["vcd"]
+    },
+    {
+      "magic": ["6375736800000002000000"],
+      "extensions": ["csh"]
+    },
+    {
+      "magic": ["EDABEEDB"],
+      "extensions": ["rpm"]
+    },
+    {
+      "magic": ["435753", "465753", "5A5753"],
+      "extensions": ["swf"]
+    },
+    {
+      "magic": ["5349542100", "5374756666497420286329313939372D"],
+      "extensions": ["sit"]
+    },
+    {
+      "magic": ["FD377A585A00"],
+      "extensions": ["xz"]
+    },
+    {
+      "magic": ["4D546864"],
+      "extensions": ["mid", "midi"]
+    },
+    {
+      "magic": ["464F524D00"],
+      "extensions": ["aiff"]
+    },
+    {
+      "magic": ["727473703A2F2F"],
+      "extensions": ["ram"]
+    },
+    {
+      "magic": ["2E524D46"],
+      "extensions": ["rm"]
+    },
+    {
+      "magic": ["2E524D460000001200", "2E7261FD00"],
+      "extensions": ["ra"]
+    },
+    {
+      "magic": ["50350A"],
+      "extensions": ["pgm"]
+    },
+	{
+      "magic": ["53514C69746520666F726D61742033"],
+      "extensions": ["sqlite"]
+    },
+    {
+      "magic": ["01DA01010003"],
+      "extensions": ["rgb"]
+    }
+	]
+}
