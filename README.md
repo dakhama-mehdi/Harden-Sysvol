@@ -55,6 +55,7 @@ Invoke-HardenSysvol -Allextensions
 | Allextensions  | Scans all file types without any exceptions.                                                              | `-Allextensions`                                |
 | DnsDomain      | Targets a specific child domain or Domain Controller (DC).                                                | `-Dnsdomain dc-2` or `-Dnsdomain domain.local` |
 | Custompatterns | Allows the use of a custom pattern file, as long as it follows the original .xml format.                  | `-Custompatterns C:\temp\custom.xml`            |
+| SavePath       | Save rapport on custom path other then temp by default                                                    | `-SavePath C:\Folder\`            |
 
 ## How It Works
 HardenSysvol first analyzes the shared folders on the Domain Controller where it is run, or on a specified target defined by parameters. For each file, it checks against a list of 180 default extensions. If a file, such as a .doc file, is renamed to .exe (or vice versa), it will trigger an error, making it difficult for suspicious files to bypass detection.
