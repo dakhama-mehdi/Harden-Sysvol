@@ -2,9 +2,10 @@
 
 ![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
-![Status: In Progress](https://img.shields.io/badge/Status-In%20Progress-orange)
+![Status: Completed](https://img.shields.io/badge/Status-Completed-green)
 ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
 ![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
+![Platform: Windows 10/11 & Server](https://img.shields.io/badge/Platform-Windows%2010%2F11%20%26%20Server-blue)
 
 ## Description
 HardenSysvol is an open-source tool developed by the HardenAD Community to complement Active Directory audit tools by analyzing GPOs and scripts on Sysvol folder. It is ready-to-use, easy to deploy, and requires no complex configurations (no elevated privileges or EDR deactivation needed).
