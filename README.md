@@ -42,8 +42,13 @@ Invoke-HardenSysvol
 ```powershell
 Invoke-HardenSysvol -Addpattern admin -Addextension adml,admx,adm
 Invoke-HardenSysvol -Allextensions
+Invoke-HardenSysvol -Allextensions -ignoreextension adml,admx -Maxfilesize 1 -Maxbinarysize 1
 ````
-
+## Offline installation
+```powershell
+Simply unzip the module files to `C:\Users\<YourUsername>\Documents\WindowsPowerShell\Modules\`.
+If the **Modules** folder doesn’t exist, create it manually.
+````
 ### Parameters
 
 | Parameter      | Explanation                                                                                               | Example                                         |
