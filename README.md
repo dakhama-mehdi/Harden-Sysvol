@@ -10,7 +10,7 @@
 ## Description
 HardenSysvol is an open-source tool developed by the HardenAD Community to complement Active Directory audit tools by analyzing GPOs and scripts on Sysvol folder. It is ready-to-use, easy to deploy, and requires no complex configurations (no elevated privileges or EDR deactivation needed).
 
-It detects sensitive data across 40+ extensions (e.g., scripts, documents, PDFs) and identifies suspicious binaries among 180+ extensions. The tool also inspects certificates, hidden binaries within images, encrypted ZIP files, and more.
+It detects sensitive data across 40+ extensions (e.g., scripts, documents, PDFs) and identifies suspicious binaries among 180+ extensions. The tool also inspects certificates, hidden binaries within images, encrypted ZIP files, support regular expression and more.
 
 <a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
 
