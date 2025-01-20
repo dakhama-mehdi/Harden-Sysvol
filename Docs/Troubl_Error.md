@@ -5,7 +5,7 @@ Option 1: Use the -executionpolicy Flag
 Run the following command to invoke HardenSysvol with the Bypass execution policy:
 
 ```powershell
-powershell/exe -executionpolicy bypass -File path\to\HardenSysvol.ps1
+powershell.exe -executionpolicy bypass invoke-hardensysvol
 ````
 
 Option 2: Set the Execution Policy for the Current Session
