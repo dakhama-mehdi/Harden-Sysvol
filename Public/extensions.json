@@ -2,7 +2,7 @@
   "magic_numbers": [
     {
       "magic": ["D0CF11E0A1B11AE1"],
-      "extensions": ["doc", "xls", "msi", "ppt", "vsd", "db", "msg","xla","apr","dot","suo"]
+      "extensions": ["doc","xls","msi","ppt", "vsd", "db", "msg","xla","apr","dot","suo"]
     },
 	{
       "magic": ["504B03040A000200"],
@@ -10,7 +10,7 @@
     },
     {
       "magic": ["504B0304140000", "504B0304"],
-      "extensions": ["docx","xlsx","pptx","odp","ods","jar","odt","zip","ott","vsdx","xps","kmz","kwd","oxps","sxc","sxd","sxi","sxw","xpi","msix"]
+      "extensions": ["docx","xlsx","xlsm","xlam","pptx","odp","ods","jar","odt","zip","ott","vsdx","xps","kmz","kwd","oxps","sxc","sxd","sxi","sxw","xpi","msix"]
     },	
     {
       "magic": ["4D5A","4D5A90000300000004000000FFFF0000"], 
@@ -46,10 +46,6 @@
       "extensions": ["gif"]
     },
     {
-      "magic": ["49492A"],
-      "extensions": ["tif"]
-    },
-    {
       "magic": ["00000100"],
       "extensions": ["ico"]
     },
@@ -73,7 +69,7 @@
     },
     {
       "magic": ["3082", "2D2D2D2D2D424547"],
-      "extensions": ["cer", "pfx", "der", "pem", "p7b"]
+      "extensions": ["cer", "pfx", "crt", "csr", "der", "pem", "p7b"]
     },
     {
       "magic": ["4F54544F00"],
@@ -288,7 +284,7 @@
     },
     {
       "magic": ["492049", "49492A00", "4D4D002A", "4D4D002B"],
-      "extensions": ["tiff"]
+      "extensions": ["tiff", "tif"]
     },
     {
       "magic": ["38425053"],
@@ -385,6 +381,18 @@
 	{
       "magic": ["53514C69746520666F726D61742033"],
       "extensions": ["sqlite"]
+    },	
+	{
+      "magic": ["456C6646696C6500", "4C664C65"],
+      "extensions": ["evtx", "evt"]
+    },
+	{
+      "magic": ["774f4646", "774f4632"],
+      "extensions": ["woff", "woff2" ]
+    },
+	{
+      "magic": ["456C6646696C6500", "4C664C65"],
+      "extensions": ["evtx", "evt"]
     },
     {
       "magic": ["01DA01010003"],
