@@ -6,6 +6,6 @@ It is possible and useful to add custom patterns and regular expressions to the 
 
 #### Example Usage:
 
-```bash
+```powershell
 Invoke-HardenSysvol -addpattern admin,administrator,log,ssh
-```
+````
