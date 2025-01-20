@@ -11,7 +11,6 @@ powershell.exe -executionpolicy bypass invoke-hardensysvol
 Option 2: Set the Execution Policy for the Current Session
 Alternatively, open PowerShell with administrator privileges and run this command to set the execution policy to Bypass for the session:
 
-
 powershell.exe -ExecutionPolicy Bypass
 Then, run the HardenSysvol script:
 
