@@ -14,7 +14,7 @@ HardenSysvol is an open-source tool developed by the HardenAD Community to compl
 
 It detects sensitive data across 40+ extensions (e.g., scripts, documents, PDFs) and identifies suspicious binaries among 180+ extensions. The tool also inspects certificates, hidden binaries within images, encrypted ZIP files, support regular expression and more.
 
-<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol.html#Tab-zqtd4y6c" target="_blank">View Example HTML Page</a>
+<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_V2.html#Tab-9gjxny5r" target="_blank">View Example HTML Page</a>
 
 <a href="https://www.experts-exchange.com/articles/39474/Audit-and-identify-vulnerabilities-in-GPOs-SYSVOL.html" target="_blank">Presentation Article</a>
 
