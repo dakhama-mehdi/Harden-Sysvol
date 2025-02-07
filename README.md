@@ -30,7 +30,6 @@ It detects sensitive data across 40+ extensions (e.g., scripts, documents, PDFs)
 | **Steganography**                   | Analyzes images to detect hidden files by searching for file signatures like EXE, ZIP, etc.                           | Images (JPEG, PNG, BMP, GIF, etc.) and hidden files (EXE, MSI, ZIP, RAR, 7z).                 |
 | **File Signature Verification**     | Verifies file signatures for security compliance, including detection of password-protected ZIP files.              | MSI, EXE, DLL, JAR, MSU, CAB, and ZIP (password-protected).                                 |
 
-
 ## Requirements
 - **PowerShell**: 5.1 or higher.
 - **Permissions**: The tool can be run by any standard account on the domain.
@@ -73,6 +72,7 @@ powershell.exe -ExecutionPolicy Bypass Invoke-hardensysvol
 | Custompatterns | Allows the use of a custom pattern file, as long as it follows the original .xml format.                  | `-Custompatterns C:\temp\custom.xml`            |
 | SavePath       | Save rapport on custom path other then temp by default                                                    | `-SavePath C:\Folder\`                          |
 | Maxfilesize    | Maxfilesize scripts and Maxbinarysize limit to not exceed in MB, by default 10MB for file and 50MB binary | `-Maxfilesize 5 -Maxbinarysize 10  `            |
+| ExportCSV      | Export CSV files without generate the html, only to add it soc or siem                                    | `-Exportcsv C:\Folder\Filename.csv  `           |
 
 ## How It Works
 HardenSysvol first analyzes the shared folders on the Domain Controller where it is run, or on a specified target defined by parameters. For each file, it checks against a list of 180 default extensions. If a file, such as a .doc file, is renamed to .exe (or vice versa), it will trigger an error, making it difficult for suspicious files to bypass detection.
