@@ -1,4 +1,4 @@
-# HardenSysvol: Audit AD Sysvol contenent
+# HardenSysvol – Audit the hidden risks in your GPO & SYSVOL folder
 
 ![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
@@ -9,7 +9,6 @@
 
 <img src="https://github.com/user-attachments/assets/520b6eb7-bcd8-4fdd-9693-d0446be0972f" alt="Logo_github" width="300" height="200">
 
-## Description
 Harden‑Sysvol is a PowerShell module that audits and secures Groupe Policy and the contents of the SYSVOL folder by identifying sensitive or suspicious data such as files hidden within images, malicious macros, obfuscated scripts, wrong ACL permission, or misconfigured certificates.
 
 <a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_V2.html#Tab-9gjxny5r" target="_blank">🔎 Example Report</a> • 
