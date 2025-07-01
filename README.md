@@ -1,4 +1,4 @@
-# HardenSysvol – Audit the hidden risks in your GPO & SYSVOL folder
+# HardenSysvol : Audit the hidden risks in your GPO & SYSVOL folder
 
 ![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
