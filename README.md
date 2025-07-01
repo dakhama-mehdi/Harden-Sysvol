@@ -12,11 +12,10 @@
 ## Description
 Harden‑Sysvol is a PowerShell module that audits and secures Groupe Policy and the contents of the SYSVOL folder by identifying sensitive or suspicious data such as files hidden within images, malicious macros, obfuscated scripts, wrong ACL permission, or misconfigured certificates.
 
-<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_V2.html#Tab-9gjxny5r" target="_blank">View Example HTML Page</a>
+<a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_V2.html#Tab-9gjxny5r" target="_blank">🔎 Example Report</a> • 
+<a href="https://www.experts-exchange.com/articles/39474/Audit-and-identify-vulnerabilities-in-GPOs-SYSVOL.html" target="_blank">📄 Article</a> • 
+<a href="https://www.youtube.com/watch?v=lCEUoO39GtE&t=131s&ab_channel=IT-Connect" target="_blank">🎥 YouTube Demo</a>
 
-<a href="https://www.experts-exchange.com/articles/39474/Audit-and-identify-vulnerabilities-in-GPOs-SYSVOL.html" target="_blank">Presentation Article</a>
-
-<a href="https://www.youtube.com/watch?v=lCEUoO39GtE&t=131s&ab_channel=IT-Connect" target="_blank">Youtube presentation with subtitling</a>
 
 With a single command, `Invoke-Hardensysvol` helps you identify potential security risks and misconfigurations that often go unnoticed.
 
@@ -32,10 +31,8 @@ With a single command, `Invoke-Hardensysvol` helps you identify potential securi
 - 📂 Audits ACLs on SYSVOL files and folders to identify overly permissive or non-standard access rights
 
 ## Requirements
-- **PowerShell**: 5.1 or higher.
-- **Permissions**: The tool can be run by any standard account on the domain.
-- **Compatibility**: Works on Windows Server environments and Windows 10/11
-
+- 💻 Windows 10/11 or Windows Server 🔐 Standard domain user account (no admin rights required)
+  
 ## Installation from Powershell Gallery
 Run the following command in PowerShell:
 ```powershell
