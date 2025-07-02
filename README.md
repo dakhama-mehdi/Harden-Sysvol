@@ -9,7 +9,7 @@
 
 <img src="https://github.com/user-attachments/assets/520b6eb7-bcd8-4fdd-9693-d0446be0972f" alt="Logo_github" width="300" height="200">
 
-Harden‑Sysvol is a PowerShell module that audits and secures Groupe Policy and the contents of the SYSVOL folder by identifying sensitive or suspicious data such as files hidden within images, malicious macros, obfuscated scripts, wrong ACL permission, or misconfigured certificates.
+Harden‑Sysvol is a PowerShell module that audits Group Policy and analyzes the content of files in the SYSVOL folder to detect sensitive data, misconfigurations, or suspicious elements such as hidden files, malicious macros, incorrect ACLs, and more. It supports multiple file types and extensions, including Office documents, PDFs, LibreOffice, and OpenOffice formats.
 
 <a href="https://dakhama-mehdi.github.io/Harden-Sysvol/Exemples_HTML/hardensysvol_V2.html#Tab-9gjxny5r" target="_blank">🔎 Example Report</a> • 
 <a href="https://www.experts-exchange.com/articles/39474/Audit-and-identify-vulnerabilities-in-GPOs-SYSVOL.html" target="_blank">📄 Article</a> • 
