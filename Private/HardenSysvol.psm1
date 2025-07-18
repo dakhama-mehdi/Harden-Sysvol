@@ -1,30 +1,28 @@
-﻿<#
-.SYNOPSIS
-    Sysvol Security Audit Module
+﻿ <#
+    .SYNOPSIS
+    Scans the SYSVOL folder for sensitive or risky content.
 
-.DESCRIPTION
-  This module is designed to scan the Sysvol folder for files containing sensitive information, such as passwords, usernames, certificates, and configuration data. 
-  It identifies potential security risks by detecting files that may expose sensitive content, such as documents, scripts, and configuration files. 
-  The tool also analyzes file integrity and flags files that require additional scrutiny, helping administrators to harden their Sysvol directory and 
-  Ensure a secure Active Directory environment.
+    .DESCRIPTION
+    This module audits the SYSVOL directory for files containing sensitive data (passwords, usernames, certificates, configs, etc.). 
+    It helps identify security risks and integrity issues to harden Active Directory environments.
   
-.VERSION
-    1.7
+    .VERSION
+    2.0.2
 
-.Contribution
+    .Contribution
     Credit : HardenAD Community HardenAD
     Credit : It-connect Community It-Connect
 
-.AUTHOR
+    .AUTHOR
     DAKHAMA Mehdi
 
-.PARAMETER dnsDomain
+    .PARAMETER dnsDomain
     Specifies the DNS domain to be scanned. Defaults to the current user's DNS domain if not provided.
 
-.PARAMETER ignoreExtensions
+    .PARAMETER ignoreExtensions
     Specifies file extensions to ignore during the scan.
 
-.EXAMPLE
+    .EXAMPLE
     # Scan the Sysvol folder of the current domain
     Invoke-HardenSysvol
 
@@ -36,9 +34,42 @@
 
 .LINK
     https://github.com/dakhama-mehdi/Harden-Sysvol
-#>
+    #>
 
 function Invoke-HardenSysvol {
+    <#
+    .SYNOPSIS
+    Scans the SYSVOL folder for sensitive or risky content.
+
+    .DESCRIPTION
+    This module audits the SYSVOL directory for files containing sensitive data (passwords, usernames, certificates, configs, etc.). 
+    It helps identify security risks and integrity issues to harden Active Directory environments.
+
+    .PARAMETER dnsDomain
+    Specifies the DNS domain to be scanned. Defaults to the current user's DNS domain if not provided.
+
+    .PARAMETER ignoreExtensions
+    Specifies file extensions to ignore during the scan.
+
+    .EXAMPLE
+    Scan the Sysvol folder of the current domain
+    Invoke-HardenSysvol
+    .EXAMPLE
+    Scan the Sysvol folder of a specific domain, ignoring .txt and .log files
+    Invoke-HardenSysvol -dnsDomain "example.com" -ignoreExtensions "txt","log" -Addpattern admin -AddExtensions adml,admx,adm
+    .EXAMPLE
+    Scan include all extensions
+    Invoke-HardenSysvol -Allextensions
+    .EXAMPLE
+    Scan include Policydefintions 
+    Invoke-HardenSysvol -Allextensions -Includepolicydefinitions
+
+    .NOTES
+    This script not requires administrative privileges to access and scan the Sysvol directory.
+
+    .LINK
+    https://github.com/dakhama-mehdi/Harden-Sysvol
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $false)]
@@ -64,6 +95,10 @@ function Invoke-HardenSysvol {
         [Parameter(ValueFromPipeline = $true, HelpMessage = "Enter desired directory path to save; Default: %temp%")]
         [String]$SavePath = $env:TEMP,
 
+        #Location to export CSV
+        [Parameter(ValueFromPipeline = $true, HelpMessage = "Enter desired directory path to save; Default: %temp%")]
+        [String]$Exportcsv,
+
         #Location the report will be saved
         [Parameter(ValueFromPipeline = $true, HelpMessage = "maximum size of the file to be considered large in MB")]
         [int]$Maxfilesize = '10',
@@ -71,6 +106,10 @@ function Invoke-HardenSysvol {
         #Location the report will be saved
         [Parameter(ValueFromPipeline = $true, HelpMessage = "maximum size of the binary to be considered large in MB")]
         [String]$MaxBinarysize = '50',
+
+        # Include: scans the 'PolicyDefinitions' folder, which contains added .admx and .adml templates
+        [Parameter(HelpMessage = "Include files from the 'Policies\\PolicyDefinitions' folder (central store for ADMX/ADML templates).")]
+        [switch]$IncludePolicyDefinitions,
 
         #Location Custom pattern file
         [Parameter(ValueFromPipeline = $true, HelpMessage = "Enter Custome XML file path; Default: %module%\patterns.xml")]
@@ -84,10 +123,27 @@ function Invoke-HardenSysvol {
         })]$Custompatterns
     )
 
+$Bannercolor = "Yellow"
+$MSGcolor    = "DarkGreen"
+
+function Show-HardenSysvolBanner {
+   param (
+        [string]$BannerColor
+    )
+Write-Host ""
+Write-Host "╔═════════════════════════════════════════════════════╗" -ForegroundColor $Bannercolor
+Write-Host "║        Welcome to HardenSysvol v2.0                 ║" -ForegroundColor $Bannercolor
+Write-Host "║        Auditing Active Directory SYSVOL & GPOs      ║" -ForegroundColor $Bannercolor
+Write-Host "║        Developed by  HardenAD Community             ║" -ForegroundColor $Bannercolor
+Write-Host "╚═════════════════════════════════════════════════════╝" -ForegroundColor $Bannercolor
+Write-Host ""
+}
+Show-HardenSysvolBanner -BannerColor $Bannercolor
 #region script
 #region code
 
 #region load prerequist
+
 
 # Test access to the share
 $testpath = Test-Path "\\$dnsDomain\sysvol\"
@@ -102,15 +158,13 @@ foreach ($module in $modulesToCheck) {
     try {
         # Check if module installed
         if (!(Get-Module -ListAvailable -Name $module)) {
-            Write-Output "Installation du module :  $module."
+            Write-Output "Installing module: $module."
             install-Module -Name $module -Force -Scope CurrentUser -ErrorAction Ignore
             Write-Output "The module $module has been successfully installed"
-        } else {
-            Write-Output "Module $module is installed"
-        }
+        } 
     } catch {
-        Write-Error "Erreur lors d'installation du module $module : $_"
-        throw "Script stopped due to an error during module installation $module."
+       Write-Error "Error while installing module $module : $_"
+       throw "Script stopped due to an error during module installation $module."
     }
 }
 
@@ -229,6 +283,41 @@ if ($sevenZipPath) {
     # Initialize a list to store the results
     $Results = @()
 
+    # Informations for check ACL in sysvol
+
+    # Get base SID
+    $baseSID = ([System.Security.Principal.WindowsIdentity]::GetCurrent()).User.Value -replace '-\d+$',''
+
+    # Default accounts sid
+    $sids = @(
+    'S-1-5-32-544', # Administrators
+    'S-1-5-18',     # SYSTEM
+    'S-1-3-0',      # CREATOR
+    'S-1-5-32-549', # Server Operator
+    "$baseSID-512", # Domain Admins
+    "$baseSID-519", # Entreprise Admins
+    "$baseSID-520", # Creator GPO
+    'S-1-5-9'       # Enterprise DCs
+)
+    
+    # Trying get list default ACL users in sysvol
+    $Trustgroups = $sids | ForEach-Object {
+    $sid = New-Object System.Security.Principal.SecurityIdentifier($_)
+    try {
+        $sid.Translate([System.Security.Principal.NTAccount]).Value
+    } catch {
+        $sid.value  # $sid.Value Check SID if not resolve by machine
+    }
+}
+
+    # Permission Trust
+    $Permissiontrust = @(
+    '-1610612736'
+    'ReadAndExecute', 'Read', 'Synchronize',
+    'ReadAndExecute, Synchronize', 'Read, Synchronize',
+    'ReadAttributes, ReadExtendedAttributes, ReadPermissions, Synchronize'
+    )
+
     #endregion getxmlcontenant
 
 #Initialize the variables
@@ -246,21 +335,31 @@ $runspaces = @()
 # Region Scriptfunction
 $scriptblock = {
     Param (
-        [string]$sysfiles,
+        [object[]]$sysfiles1,
         [string[]]$passwordPatterns,
         [string]$wordinstalled,
         [string]$zipinstalled,
         [string]$module,
         [int]$Maxfilesize,
         [int]$MaxBinarysize,
-        [object]$jsonContent
+        [object]$jsonContent,
+        [string[]]$Trustgroups,      
+        [string[]]$Permissiontrust
     )
 
     # Import modul FileHandlers.psm1
-    Import-Module $module -Verbose    
+    Import-Module $module -Verbose
+    $sysfiles = $sysfiles1.fullname
+    $aclResults = Check-SysvolAcl -FilePath $sysfiles -TrustGroups $Trustgroups -PermissionTrust $Permissiontrust
+    if ($aclResults) {
+    $aclResults = $aclResults | ForEach-Object {
+        $_ | Add-Member -MemberType NoteProperty -Name Created -Value $sysfiles1.CreationTime -Force
+        $_
+    }
+    return $aclResults
+    }
 
-    [String]$detectedType =  Get-FileType -filePath $sysfiles -jsonContent $jsonContent -maxfilesize $Maxfilesize -maxbinarysize $MaxBinarysize    
-       
+    [String]$detectedType =  Get-FileType -filePath $sysfiles -jsonContent $jsonContent -maxfilesize $Maxfilesize -maxbinarysize $MaxBinarysize 
     # Function to search pattern by extensions
     switch ($detectedType)  {
     'docx' {
@@ -293,8 +392,8 @@ $scriptblock = {
     {$_ -in "exe","dll","msi","msu","cab"} {
         $results = Get-ExecutablesContent -filepath $sysfiles   
     }
-    {$_ -in "pfx","cer","der"} {
-        $results = Get-CertifsContent -filepath $sysfiles
+    {$_ -in "cer","crt","cert","der","pfx","pem"} {
+        $results = Get-CertifContent -filepath $sysfiles
     }
     {$_ -in "p7b","p7c","p7s"} {
         $results = Get-P7bCertContent -filepath $sysfiles
@@ -317,10 +416,12 @@ $scriptblock = {
     'bigsize' {
         $results = Get-checkfilesize -filepath $sysfiles 
     }
-}
-    
+}    
     # Execute the appropriate command based on the detected file type
+    if ($results) {
+    $results | Add-Member -MemberType NoteProperty -Name Created -Value $sysfiles1.CreationTime -Force
     return $results
+    } 
 }
 
 if (Is-WordInstalled) {
@@ -332,12 +433,67 @@ Get-Process excel -erroraction SilentlyContinue | Stop-Process
 $fichiertraite = 0
 # Define the array to store inaccessible files
 [System.Collections.Generic.List[Object]]$notAccessibleFiles = @()
-# Create Jobs 
 
-Get-ChildItem -Path \\$dnsDomain\sysvol -Recurse -File -Include $fileExtensions -Exclude $ignoreExtensions -Force -ErrorAction SilentlyContinue -ErrorVariable notacess | ForEach-Object {
+ function Test-SysvolRootStructure {
+    param(
+        [string]$DomainName
+    )
+
+    $sysvolRoot = "\\$DomainName\SYSVOL"
+
+    Write-Host "`n Found SYSVOL root: $sysvolRoot" -ForegroundColor Cyan
+
+    $rootContent = Get-ChildItem -Path $sysvolRoot -Directory -Force -ErrorAction SilentlyContinue
+
+    if (-not $rootContent) {
+        Write-Warning "⚠️ No folders found at the SYSVOL root. Check permissions or connectivity."
+        return
+    }
+
+    $table = $rootContent | Sort-Object LastWriteTime | ForEach-Object {
+    [PSCustomObject]@{
+        Name          = $_.Name
+        Type          = if ($_.Attributes -match 'ReparsePoint') { "Linked (DFS)" } else { "Directory" }
+        LastWriteTime = $_.LastWriteTime.ToString("yyyy-MM-dd HH:mm")        
+    }
+    }
+    $table | Format-Table -AutoSize | Out-String | Write-Host
+
+    # Unexpected folders
+    $expected = @("scripts", "Policies", "$DomainName")
+    $unexpected = $rootContent | Where-Object { $_.Name -notin $expected }
+    $Trustpath = ($rootContent | ? { $_.name -eq $dnsDomain}).fullname
+
+    if ($unexpected) {
+        Write-Warning "Unexpected folders detected in SYSVOL root:" 
+        foreach ($folder in $unexpected) {
+            Write-Host " - $($folder.FullName)" -ForegroundColor Red
+            $notAccessibleFiles.Add([PSCustomObject]@{ Error = "Unexpected folder found in SYSVOL: $($folder.FullName)" })
+        }
+    }
+    else {
+        #Write-Host "`n✅ SYSVOL root structure looks normal." -ForegroundColor Green
+    }
+
+    return $Trustpath
+} 
+ $sysvolpath = Test-SysvolRootStructure -DomainName $dnsDomain
+ Start-Sleep -Seconds 2
+ clear
+ Show-HardenSysvolBanner -BannerColor $Bannercolor
+ Write-Host "[Step 1/4] Search files in $sysvolpath ..." -ForegroundColor $MSGcolor
+ if (-not $IncludePolicyDefinitions) {
+ $Allfiles = Get-ChildItem -Path $sysvolpath -Recurse -File -Include $fileExtensions -Exclude $ignoreExtensions -Force -ErrorAction SilentlyContinue -ErrorVariable notacess | Where-Object { $_.FullName -notmatch '\\Policies\\PolicyDefinitions\\' }
+ } else {
+ $Allfiles = Get-ChildItem -Path $sysvolpath -Recurse -File -Include $fileExtensions -Exclude $ignoreExtensions -Force -ErrorAction SilentlyContinue -ErrorVariable notacess
+ }
+
+ Write-Host "Found $($Allfiles.Count) file(s) to analyze." -ForegroundColor $MSGcolor 
+ Write-Host "[Step 2/4] Starting scan ..." -ForegroundColor $MSGcolor
+ $Allfiles | ForEach-Object {
 
 if ($notacess) { 
-    Write-Host $notacess -ForegroundColor Red
+    #Write-Host $notacess -ForegroundColor Red
     $notacess.GetEnumerator() | ForEach-Object {
     $errorDetails = [PSCustomObject]@{
             Error    = $_
@@ -348,16 +504,19 @@ if ($notacess) {
  } else {
  
 $fichiertraite++
-$sysfiles = $_.FullName
+$sysfiles1 = [PSCustomObject]@{
+            FullName     = $_.FullName
+            CreationTime = ($_.CreationTime.ToString("yyyy-MM-dd"))
+        }
 
 #clear
-Write-Host scans : $sysfiles -ForegroundColor Cyan
-$keepscrenn += "scans :" + $sysfiles 
+#Write-Host scan : $sysfiles1.FullName -ForegroundColor Cyan
+$keepscrenn += "scans :" + $sysfiles1.FullName 
 
 
 $runspace = [PowerShell]::Create()
 $null = $runspace.AddScript($scriptblock)
-$null = $runspace.AddArgument($sysfiles)
+$null = $runspace.AddArgument($sysfiles1)
 $null = $runspace.AddArgument($passwordPatterns)
 $null = $runspace.AddArgument($wordinstalled)
 $null = $runspace.AddArgument($zipinstalled)
@@ -365,42 +524,72 @@ $null = $runspace.AddArgument($module)
 $null = $runspace.AddArgument($Maxfilesize)
 $null = $runspace.AddArgument($MaxBinarysize)
 $null = $runspace.AddArgument($jsonContent)
+$null = $runspace.AddArgument($Trustgroups)       
+$null = $runspace.AddArgument($Permissiontrust)   
 $runspace.RunspacePool = $pool
 $runspaces += [PSCustomObject]@{ Pipe = $runspace; Status = $runspace.BeginInvoke() }
 }
 }
+ Write-Host "[Step 3/4] Starting analyze ..." -ForegroundColor $MSGcolor
 
-Write-Host "scan finished prepare analyse ..." -ForegroundColor Green
+function Show-CustomProgressBar {
+    param (
+        [int]$Completed,
+        [int]$Total,
+        [TimeSpan]$Elapsed
+    )
 
-# Display the slots and current statistic
-    while ($runspaces.Status -ne $null) {
+    $percent = if ($Total -gt 0) { [math]::Round(($Completed / $Total) * 100) } else { 0 }
+    $barLength = 30
+    $filledLength = [math]::Round(($percent / 100) * $barLength)
 
-    Start-Sleep 2
-    Clear-Host
+    $bar = ('#' * $filledLength).PadRight($barLength, '.')
+    Write-Host "`rProcessed $Completed in $Total files [$bar] $percent% | Elapsed : $($elapsed.ToString("hh\:mm\:ss")) " -ForegroundColor Cyan -NoNewline
 
-    $slt_tot = Get-Runspace | Where-Object { $_.Id -ne 1 -and $_.RunspaceIsRemote -eq $false }
-    $slt_encours = Get-Runspace | Where-Object { $_.Id -ne 1 -and $_.RunspaceAvailability -like "InUse" }
+}
     
-    Write-Host "All Objects = " $runspaces.Count
-    Write-Host "Total Slots = " $slt_tot.Count
-    Write-Host "Used SLots= " $slt_encours.Count
-    Write-Host "Remaining objects =" ($runspaces | Where-Object { $_.Status.IsCompleted -eq $false }).Count
+    $timer = [System.Diagnostics.Stopwatch]::StartNew()
+    $total = $runspaces.Count
 
-    $completed = $runspaces | Where-Object { $_.Status.IsCompleted -eq $true }
+while ($runspaces.Status -ne $null) {
+    Start-Sleep -Seconds 1
+
+    $completed = @()
+    $slt_remaining = 0
+    foreach ($r in $runspaces) {
+    if ($r.Status -ne $null) {
+        if ($r.Status.IsCompleted) {
+            $completed += $r
+        } else {
+            $slt_remaining++
+        }
+    }
+    }
+    $slt_completed = $total - $slt_remaining
+    $elapsed = $timer.Elapsed
+    $percent = [math]::Round(($slt_completed / $total) * 100)
+        
+    Show-CustomProgressBar -Completed $slt_completed -Total $total -Elapsed $elapsed 
 
     foreach ($runspace in $completed) {
         $Results += $runspace.Pipe.EndInvoke($runspace.Status)
         $runspace.Status = $null
     }
+
+    if (($runspaces | Where-Object { $_.Status -ne $null }).Count -eq 0) {
+        Write-Progress -Activity "Scan completed" -Completed
+        break
     }
+}
+
 
 #endregion code
 
 #region summary
-Write-Host "Scan completed, calculating statistics" -ForegroundColor Green
+Write-Host "`n[Step 3/4] Scan completed, calculating statistics ..." -ForegroundColor $MSGcolor
 
 # Sort results in unique mode
-$Results = $Results | Select-Object -Unique FilePath, pattern, Reason
+$Results = $Results | Select-Object -Unique FilePath, pattern, Reason, Created
 
 $sortedGroups = $Results.filepath | Group-Object | Sort-Object -Property Count -Descending 
 
@@ -491,11 +680,17 @@ $pool.Dispose()
 
 #region HTML
 
+if ($Exportcsv) {
+
+$FilteredResults | Export-Csv -Path $Exportcsv
+
+} else {
+
 $logo = "https://github.com/dakhama-mehdi/Harden-Sysvol/blob/main/Pictures/HardenSysvol.png?raw=true"
 $rightlogo = "https://github.com/dakhama-mehdi/Harden-Sysvol/blob/main/Pictures/Rightlogo.png?raw=true"
 
 # Generate HTML report
-Write-Host "Generate HTML" -ForegroundColor Green
+Write-Host "[Step 4/4] Generate HTML ..." -ForegroundColor $MSGcolor 
 
 [String]$SavePath = $SavePath + '\hardensysvol.html'
 
@@ -574,7 +769,7 @@ New-HTML -TitleText 'HardenSysvol' -FilePath $SavePath -ShowHTML:$true {
             }
     New-HTMLPanel -Width "70%" {
          New-HTMLList {
-              New-HTMLListItem -Text 'Harden-Sysvol _ Version : 1.7 _ Release : 10/2024' 
+              New-HTMLListItem -Text 'Harden-Sysvol _ Version : 2.0.2 _ Release : 06/2025' 
               New-HTMLListItem -Text 'Author : Dakhama Mehdi<br>
               <br> Credit : HardenAD Community [HardenAD](https://www.hardenad.net/)
               <br> Credit : It-connect Community [It-Connect](https://www.it-connect.fr/)
@@ -626,25 +821,26 @@ New-HTML -TitleText 'HardenSysvol' -FilePath $SavePath -ShowHTML:$true {
     }
     New-HTMLTab -Name 'Tab 2 : Details' -IconSolid user-alt   {     
     New-HTMLSection  -Invisible  {
-    New-HTMLTableOption -DataStore JavaScript 
-    New-htmlTable -HideFooter -DataTable $Results -TextWhenNoData 'Information: No sentivity data found'
+    New-HTMLTableOption -DataStore HTML -ArrayJoin  
+    New-htmlTable -HideFooter -DataTable $FilteredResults -TextWhenNoData 'Information: No sentivity data found'{
+        TableCondition -ColumnName 'Pattern' -ComparisonType string -Operator 'eq' -Value 'WrongACL' -Color 'Red' -Row 
+        }
         }
     New-HTMLSection -HeaderBackGroundColor CarrotOrange -HeaderText 'Errors log' {
-    New-HTMLTableOption -DataStore JavaScript 
+    New-HTMLTableOption -DataStore HTML
     New-htmlTable -HideFooter -DataTable $notAccessibleFiles -TextWhenNoData 'No errors during scanning'
         }
              }  
 }
-
+}
 #endregion HTML
 
 }
-
 # SIG # Begin signature block
 # MIImVgYJKoZIhvcNAQcCoIImRzCCJkMCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB9mJX0kaixC1tR
-# YhGBsm2Q6OgezCpMU2dvymgtWgG7d6CCH+wwggWNMIIEdaADAgECAhAOmxiO+dAt
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBw4LNnbIogkLyP
+# ZTj3JNxzERJeoEjk0IFjqDUM/KpBzaCCH+wwggWNMIIEdaADAgECAhAOmxiO+dAt
 # 5+/bUOIIQBhaMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAiBgNV
 # BAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yMjA4MDEwMDAwMDBa
@@ -819,31 +1015,31 @@ New-HTML -TitleText 'HardenSysvol' -FilePath $SavePath -ShowHTML:$true {
 # IFMuQS4xJDAiBgNVBAMTG0NlcnR1bSBDb2RlIFNpZ25pbmcgMjAyMSBDQQIQa8ZV
 # oPYKOOW8bR/WYvlgoDANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCDWEJy5JOxiu1z8Lzek
-# WH85GeOAlad06kcVMneRmXPGqDANBgkqhkiG9w0BAQEFAASCAYCK+dIAWcxZ+1rm
-# EL67XDeuTHBO6WBGKI6SlwVJJq2QXYAsLF4daBoYt6iD9OwoimE1TwLtWCmdqAU9
-# VrEvD4komSeKICscjNDBaDjhGFBPBLrZuwobuCztZNHoFRS82TxWJ7isPFZZaoGM
-# MKS8LQr3auNiy+i0w5T5286NkslsC97OZA3bzw7o4jERl29HaxyHcWkGb+iISkwx
-# Qd1DXAEEDsrCSHYlyDWUIqm1mGdjZyMrLzzDCiBv+Xl1hhfl93jNeaTg/lM4znTi
-# jObGpPjOjrZYZ2lKMyZAKBHPgqmxSS7Pbq0CSJ65DrrZXy/p3crCWyN+Aip8S0Q4
-# 4t8OU1KfZufdymof12xZfEr+awVDoRR8kervByxQ0UvVKLLTlYHiVNYuYQhNrI6x
-# Iz0qT2U/qWe7GhetatSLon3mbFYHS45wUItKiPTYYieizQExu1sumttXFt213+lg
-# 0IMfCLbz7igtbe8/6zxiMK7RI7qKL67mst30s3epNxhcS/BO/XOhggMgMIIDHAYJ
+# AQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCDqXFnJFvkOnJG9Kf4k
+# ZwGc7Lr904YD6NmE1iIAb1oyzzANBgkqhkiG9w0BAQEFAASCAYBmp4npqIxLUl3G
+# CTFAAaFEnA+fDX7l2/BYt2GOX6rJQo1fF7HVs54cDqx1PRjrdwlGpq2C0A8eFqTg
+# b2XP8528ObErpbl5XOASLothgZDo6Suc09gx240ca0w157B+/1rZBzR1kcUdirEv
+# we7KEdY8QcZ98MF/Umq6kDU26z9jzZxl3n/eBdfvjUVUsxdHAX0Bg8EFt7agr8oV
+# 2w2Gi1DIMiW+ZNM51RDHucFAo12xhB0zFKf3QSSUp6c6eYDiH2sc0oP3fAyDFfQQ
+# IRSyKzyLn0BImskTXNObxzGuqHuNwCaClC4ZXWSFI20UMDTkbEgZf3uNhv9dhuOj
+# 4FV6rcq2GDeDSDSRAKHPQrvAeusywwkUlQwjLoBPXL4ZtvPiIqX2b2TFmauhE3zq
+# Dxe2wQITmwRrxVe6SaoZKxtK5prql3JkbRYs7esWC1Mzu4NjSh6eB8KJ7bV0prkz
+# lb6Zo8k1gXoJOwoXsJMvwxY7hxg3Bc/qs7V6r8zjSapeZPpZq2OhggMgMIIDHAYJ
 # KoZIhvcNAQkGMYIDDTCCAwkCAQEwdzBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMO
 # RGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNB
 # NDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhALrma8Wrp/lYfG+ekE4zMEMA0G
 # CWCGSAFlAwQCAQUAoGkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG
-# 9w0BCQUxDxcNMjUwMTIwMjA0MDU2WjAvBgkqhkiG9w0BCQQxIgQgQOzjZFPjssA2
-# c2LnNhzwjlM7pgEwpM93mxx4szkzILwwDQYJKoZIhvcNAQEBBQAEggIAoz27pRpq
-# MNzIP9OQqP0FyU2eKT9M4mHVixT+7RbLs77dEdDQg1dWrOAoSuXbN6HW7LnmgjN5
-# a70xw6nW4Omkeu3Iu1zNi2n+M3QmsgFeXAUK9W8E3gUFfW/jlIAp8oSWtGI/P9Zb
-# jkpSeJMutRBocM+K/297oHDyUqw9jRRI4UA2Qo1hMMIHU8DKov9u0G0GAUKEDK5o
-# tEx0hQEqLIkMKY0nCzwiHBmRywpozNUefaC58lUwbLtfVUcXe4O5zsG6aFH91n3V
-# 83xOuK5U+5zYF75bWJt5UuCwJAarnxdZsfjbGFWnfGw7C2vkNvTMH2obth3y/CoH
-# Zys80oTnLp+rRy76muE544HI1rljLTM5WsVR+t7GFjb4NIGCcJ4JIQ5JKBOFIh+u
-# umK4B2p2jTp+OHFhELih/bXbc5rWGkTPOb250hQAqKBF8pco8nTso1mA7/bmermJ
-# ZvbV2FErbTiEvBmQTWzPEDpR5rIuqDlwL9SKf3gPJuuy7iYBLdngHP9K/f2/5piz
-# +TeRfo4jM4HrYE3RmoewFADYWz4yJx9med6fSlw0ppBx7LfgOgYWpMb3bDwL1X9q
-# L3EgjrpD5jC2pgm1iEl0rK3S4RfJ+ChxN1lpHTpGlHs5JO5EE1dIE7AdifqBpe2N
-# vdQTmwKEs+BvaQYSFqRhnrhihCObQThlM9s=
+# 9w0BCQUxDxcNMjUwNjMwMTczMzA4WjAvBgkqhkiG9w0BCQQxIgQg3H6qB1DJiEV2
+# WMvcnB1rCAgvUyB8i70DCu08bI+/MYcwDQYJKoZIhvcNAQEBBQAEggIAcEkur7AG
+# YAOztNPSrDrrc1M1/+78/sWJrMoJF7wsoBx6yPPlrofaB3nQXeboZ2RPVyvbzdxS
+# v6SOKeHlGY1Qr4swxINU0EC4yuhrudj7oYI+OalDzQ0QjiH3P1z2nuTLsH0e0C35
+# QPn4yUPy/pSSiCViCFPe9z9PbOBEB5o/Q7FtfQAGLlQywEOvzRhOQeNGV6rz8SYf
+# Nq/xcJbdGhl3s7DBvgsA/ryxlanTQegIWwzW3LYXsTHhggCwRFzrrg5oN3AGDNKl
+# VjOb2P8TH1w2dm46VahOLXsxZs6fmZfDJxa3SSuWzjpC0q1HCwKYz/Oi2+KY4Wta
+# MazrIjURSBA433aZCj8Y8gOBXVziroHqiVPIB+uSX33Dr7YcP7PdcZaStMczBnv0
+# 2iGEgAoxcz+pbVs/9Z/Of/k+/GEIWlf8C6Zx4AIAXVIxjYXIk+Gc4Ztwyrz93NFs
+# +EgYr37eyxDqCxWVo0xGwMBug5JIQm/TQsP3OrW2A876iwfS2zLEb/pyavHfKyLx
+# XOOGJWv8GGaSBeyF62/6wlIKW6e44GGGeky28voDivCgkW83tvxFqCkm5OGWNEti
+# dRp9sLhuYMUn5KDfnp7hQQ+Ncw3PSbqBbDX/L0jJ4jUIe42/K6ghtkEYGDf9QKZp
+# 8AloIkgS4n0zhMddxCUDKYFJ0ajfSgpH3UY=
 # SIG # End signature block
