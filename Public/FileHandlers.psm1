@@ -6,8 +6,7 @@ function Test-ExcelMacros {
         [string]$FilePath
     )
 
-    $result = $false  # Par défaut, pas de macros détectées
-
+    $result = $false # Macros check
     $excel = New-Object -ComObject Excel.Application
     $excel.DisplayAlerts = $false
     $excel.Visible = $false
@@ -29,9 +28,39 @@ function Test-ExcelMacros {
     }
     return $result
 }
+function Check-SysvolAcl {
+    param (
+        [string]$FilePath,
+        [string[]]$TrustGroups,
+        [string[]]$PermissionTrust
+    )
+
+    $results = @()
+    try {
+        $acl = Get-Acl -Path $FilePath #-ErrorAction Stop
+    } catch {
+        #Write-Warning "Impossible de lire les ACL de : $fichier"
+        return
+    }
+
+    $acl.Access | Where-Object {
+    $_.IsInherited -eq $false -and
+    $Trustgroups -notcontains $_.IdentityReference.Value -and
+    $_.FileSystemRights -notin $PermissionTrust
+} | ForEach-Object {
+        $msg = "$($_.IdentityReference.Value) has '$($_.FileSystemRights)'"
+        $results += [pscustomobject]@{
+            FilePath = $FilePath
+            Pattern  = 'WrongACL'
+            Reason   = $msg
+        }
+    
+    }
+    return $results
+}
+
 
 #region FonctionDetect
-
 function Get-OthersContent {
     param (
         [string]$filepath,
@@ -64,7 +93,7 @@ function Get-OthersContent {
             $result = [PSCustomObject]@{
                 FilePath = $filepath
                 pattern  = $patternMatch
-                Reason     = $match.Line
+                Reason   = $match.Line
             }
             $results += $result
             }            
@@ -444,6 +473,68 @@ function Get-Pdfcontent {
             }
             $results
 }
+function Get-OthersxmlContent {
+    param (
+        [string]$filepath,
+        [string[]]$patterns,
+        [int]$MaxContextLength = 40  # Number of characters to display after the word
+    )  
+
+    $results = @()    
+    $maxMatchesPerLine = 2  # Limit to 2 occurrences per pattern per line
+
+    try {
+        # Read the file line by line
+        $lines = Get-Content -Path $filepath
+
+        foreach ($line in $lines) {
+            foreach ($pattern in $patterns) {
+                # Find all matches for the current pattern (limited to 2)
+                $valueMatches = [regex]::Matches($line, $pattern) | Select-Object -First $maxMatchesPerLine | ForEach-Object { $_.Value }
+
+                # Identify the type of detected pattern
+                $patternMatch = switch ($pattern) {
+                    '\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b' { 'IPv4' }
+                    '\b[a-fA-F0-9]{32}\b' { 'MD5' }
+                    '\b[a-fA-F0-9]{40}\b' { 'SHA-1' }
+                    '\b[a-fA-F0-9]{64}\b' { 'SHA-256' }
+                    '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b' { 'UPN' }
+                    '\b[Pp]assword\s*[:=]\s*\S+' { 'Password' }
+                    default { $pattern }
+                }
+
+                # Store each found match
+                foreach ($valueMatch in $valueMatches) {
+                    if (-not [string]::IsNullOrEmpty($valueMatch)) {
+                        
+                        # Find the exact position of the word in the line
+                        $startIndex = $line.IndexOf($valueMatch)
+                        $endIndex = [Math]::Min($startIndex + $MaxContextLength, $line.Length)
+
+                        # Extract the found word + 40 characters after
+                        $reason = $line.Substring($startIndex, $endIndex - $startIndex).Trim()
+
+                        # Add the result
+                        $results += [PSCustomObject]@{
+                            FilePath = $filepath
+                            Pattern  = $patternMatch
+                            Reason   = $reason  # Found word + 40 characters after
+                        }
+                    }
+                }
+            }
+        }
+    }
+    catch {
+        $results += [PSCustomObject]@{
+            FilePath = $filepath
+            Pattern  = 'error'
+            Reason   = $_.Exception.Message
+        }
+    }
+
+    return $results
+}
 function Get-Xmlcontent {
         param (
         [string]$filepath,
@@ -498,35 +589,7 @@ function Get-Xmlcontent {
                 }
                 $results += $result
             } 
-            else {
-                $xml = [xml]$xmlContent
-                foreach ($pattern in $patterns) {
-                    $findmatches = $xmlContent | Select-String -Pattern $pattern
-                    foreach ($match in $findmatches) {
-             
-             switch ($pattern) {
-            '\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b' { $pattern = 'IPv4' }
-            '\b[a-fA-F0-9]{32}\b' { $pattern = 'MD5' }
-            '\b[a-fA-F0-9]{40}\b' { $pattern = 'SHA-1' }
-            '\b[a-fA-F0-9]{64}\b' { $pattern = 'SHA-256' }
-            '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b' { $pattern = 'UPN' }
-            default {
-            switch -Wildcard ($pattern) {
-            'net *' { $pattern = 'Commande Net User' }
-            default { $pattern = $pattern }
-             }
-             }             
-             }
-             
-             $result = [PSCustomObject]@{
-                            FilePath = $filepath
-                            Pattern  = $pattern
-                            Reason     = $match.Matches.Value
-                        }
-                        $results += $result
-                    }
-                }
-            }
+            else { $results= Get-OthersxmlContent -filepath $filepath -patterns $patterns }
             $results
 }
 function Get-Xlsmcontent {
@@ -657,7 +720,7 @@ function Get-Requiredcheckcontent {
              
         return $result
         }
-function Get-CertifsContent {
+function Get-CertifContent {
     param (
         [string]$filePath
     )
@@ -670,7 +733,7 @@ function Get-CertifsContent {
         if (!$cert.Thumbprint) { $result = [PSCustomObject]@{
                     FilePath =  $filepath
                     pattern  = 'Certificate Empty'
-                    Reason     = 'Certificate without Thumbprint'
+                    Reason   = 'Certificate without Thumbprint'
                 }
       $results = $result }
         if ($cert.PrivateKey) { $result = [PSCustomObject]@{
@@ -762,6 +825,8 @@ function Get-HiddenFilesInImage {
             "7z"  = "377ABCAF271C"; # 7z file
             "mimikatz" = "6D696D696B61747A"
             "printf"   = "7072696E7466"
+            "invoke-" = "696E766F6B652D"
+            ".Net.WebClient" = "2E4E65742E576562436C69656E74"
             "EXE" = "4D5A";       # EXE file (MZ header)
         }
 
@@ -782,7 +847,7 @@ function Get-HiddenFilesInImage {
                     $result = [PSCustomObject]@{
                     FilePath =  $filepath
                     pattern  = 'Suspicious Image'
-                    Reason     = "EXE file with '0000004000' string detected"
+                    Reason   = "EXE file with '0000004000' string detected"
                 }
                 return $result
                     }
@@ -1227,12 +1292,11 @@ function Get-FileType {
 
     return $detectedType
 }
-
 # SIG # Begin signature block
 # MIImVgYJKoZIhvcNAQcCoIImRzCCJkMCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAYpVrCYtgaLhSH
-# fKw6lUYxgtX5XsvfoLYGFVNyrE+ZSqCCH+wwggWNMIIEdaADAgECAhAOmxiO+dAt
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB0BUD7Ms2+2HSV
+# czwDqzY9TwbA8imbLQ+7nWtFNu54N6CCH+wwggWNMIIEdaADAgECAhAOmxiO+dAt
 # 5+/bUOIIQBhaMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAiBgNV
 # BAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yMjA4MDEwMDAwMDBa
@@ -1407,31 +1471,31 @@ function Get-FileType {
 # IFMuQS4xJDAiBgNVBAMTG0NlcnR1bSBDb2RlIFNpZ25pbmcgMjAyMSBDQQIQa8ZV
 # oPYKOOW8bR/WYvlgoDANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCAKDZGHbr0oiXl/1BW7
-# CYVtWNS7AbUPRhED7EpMgd5/rjANBgkqhkiG9w0BAQEFAASCAYCcDCi5IheKOZj+
-# moiIbNPzqBd/hOsJugm3hMLze0IB0govbghw5qdP2KcFNC7Mlsm5KZ8qCx2p4bM2
-# vrHHfeEXeQDPlwJWkLiQ5NmEaxwWPuk+k+B8MEgUFZIDRiNR7SrA+BtaoSwVaISi
-# Id25R/KsT/BZ1zf/EGSEWO26c2rmKwreGeIEENlc6RViAN6wMkl9C4ytXgnehCBO
-# q0xO16D5LPvjdQyMV5Mdmvyqomopy6dRs60b1sy6SPPR3rAu6Dt8el5d/dHYqtyH
-# 8Uindqi4X0CvwappeelVQO79KfiAjx4mMemxg8fa45owaOlLstxqSgmtOYYBXihr
-# 18y0WMXIfwgTQCDmHeIObpColD6xT0Xn/w9JO7BtdOe4sB4+py6ScPxLZEK9A48t
-# iBSQlI/TZd80axq64ThySW1v2p8603v3C0ROeEHXVO8+KqcsefimIux1VhxProEW
-# uge2oZZO+xGZl0kvmkPW4O1+Syv1wwvZmUXUYB5dJc9djbxCIsKhggMgMIIDHAYJ
+# AQsxDjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCAEelmrgbNiaNbFGy5l
+# xSEowwnpceE099QEP1rRds4QAzANBgkqhkiG9w0BAQEFAASCAYADTfVGpixjezLP
+# JUPdmPLP50z0W1tMviidB/9nd+W69b71XpvkadUHrHpbf9f9jwTI02Eh3Oq6oGE6
+# FdojCHgijl+Yovvr85duquk42yshjS06tMyv7SZjaLllKFZnzJJU0IlJLd/z8zWg
+# Duda1cz0k217UjHqXprxVpaoBQpvS41VJ0tnsK74GK0hUe8/7hZsT2W8TQ7x2jrx
+# +6ZmojMJss9Q0OBRfocS1DSlUfKbm6mSFMt0R+/IAXcNeaYv5NhSfeCJHsfcefRH
+# vnd641OlFyYboy42ZDeTYVU+QWXMpko9RfW8FPJivzql8gdx4pzqqlZUPhrgyqI7
+# 6Q6WxlD2vctsyAsnnt1/aG73TxYqfVh11rLz6qBr5L61AUG7ikSBJuc4YRz5yeDe
+# D8N0Pe9N0YkWEST3CExMcibEQsafyfwZmEVl6tcv8oGyDw2zFDqqG+GfswlgVoDY
+# I9EJ/ttRlcMPx8CvoDjwB0sTaM/KdouQ++vapJbROR0ppHU2SUihggMgMIIDHAYJ
 # KoZIhvcNAQkGMYIDDTCCAwkCAQEwdzBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMO
 # RGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNB
 # NDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhALrma8Wrp/lYfG+ekE4zMEMA0G
 # CWCGSAFlAwQCAQUAoGkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG
-# 9w0BCQUxDxcNMjUwMTIwMjA0MDUzWjAvBgkqhkiG9w0BCQQxIgQgQDjiPRon6Y9F
-# bGMoyj4hK6fXInxdQ3gqUqWOInnJdF4wDQYJKoZIhvcNAQEBBQAEggIAdXCXCszL
-# HTmYMFuSPrZxmeK9xb5EkJzmXVBbVjXUIoh74JLBKMMZ6H8wAPxXHn6Ecm2AKQW6
-# 3vS7T1dT+xld9Cv9Ekhg1lTCaZ31R0vmXv80Sh88gboFPJeMEly5SU3U+D2FBK9T
-# EwE/60rxz4I2ohzjO33Vaa43xgh66uUgCRThyI9zzSAt2E0gUwkdGlpvgzEpX8hV
-# cTpuaoDAkc+VrjEOFZXeEIkCdkf4YwtSFnJYgGnA3v/vgiCpb6lLmAdV4uAnxd5y
-# WiU1/H7kJt1YHmMlBojp69qchowjulxtYH0bpVljd0nsQrNC/exYmTz/Bh7tuG1l
-# iXix8ARQY65k+cDWkEcnRXywaJQcxTYt+wlKxCKkS/DE5i7W2Y6cZIGtulYXhZ3R
-# bVAABNXOATHqLiwPiCtykYkvVHcGtiQqg2ctDGFeKOgelveaAxPBpVP3aqNvA+FW
-# 94BZhgqV3wBS9VMG+JDpiom23rFjq4T5NVZnI/Va+s1PgOV8jMly6QsH46qirw9/
-# T8ukkCK0n8eE9cu0y7fxP8cbvOwsYeyvHBQqZAyoKVaM47hRbwV4q98BOxIDyQmh
-# 3T8W3Cr7vZh7XcknPDyFEtn7QgaFVohYx/VVugIk74xMz68vbdSs/5vvqwqsTurC
-# ShnSwPjlI2leRMxJ6AgCYSIMxW3PW54/0bY=
+# 9w0BCQUxDxcNMjUwNjMwMTczMzA2WjAvBgkqhkiG9w0BCQQxIgQgnlJWOpf6yI7/
+# HIUbBSNq9EFd/xUQVeS9VajrwBKQlKwwDQYJKoZIhvcNAQEBBQAEggIAdPOa+oNl
+# QNFbkL/WnBHX4jt6DuvUl79SIbDFpZ4l+B9xTm2aHYOFLxu5RB2yn6AaBgUAEkIo
+# tKy6Qv13bXL7eoIq0wLi2WAmj4ndcMh4t7TVN14yVVI8t/0dm9UN3qsVHYocdI/3
+# peOwA8GfGi+7Ki+AqQ6q6FG/nQ4qbdc7VNr2oeRMS/i6Z4ADQBEj8V/I4Mirn6YM
+# VIf9LP/Ttg8XrhZUJAOi2qy0lhB/68NTWkiLFA/dW3EpMe0bjYB9XfnzaFxjFZ1Z
+# yETVIDDhyLaakJiLqxFOAS3lcLLM08nZzQPsJP7i7kG7ClqOUckRJ0jE3EWd2fQ2
+# j+8+G78dOLuPiSTYFS02xn3L/1el8SdoGntDy0xKAnTQQYzWx1+IyhQ7dSq0qGlg
+# Zad/0NhMN51sEhPUWQrkRE8HTW1iF5Xgp3gj4I902iJHYD3zcUKZGDH1H4BXzUbF
+# JHxmAtDmrUUhz9NnemX5BjK33RT2oY/02ie+9ZFK14DQuuzCpoSCJwFiWJ3W6dEC
+# n3fzoTMU2YK7k/456WHJPpzG2X/baSGTC8oXl0Xf3N2vxavWgnlPBKxH1C7UJYi5
+# UBKZbIy40aIQz1KgK5tVoBhbB5hoAtnN4kbINXBd0574JNEAfekAdUoG17j7Z6QT
+# diTh040er7R+K9KxvsPmsIhWQ1Cwbo5IOhc=
 # SIG # End signature block

@@ -69,7 +69,7 @@
     },
     {
       "magic": ["3082", "2D2D2D2D2D424547"],
-      "extensions": ["cer", "pfx", "crt", "csr", "der", "pem", "p7b"]
+      "extensions": ["cer", "pfx", "crt", "csr", "der", "pem", "p7b", "cfge", "ppe", "cert"]
     },
     {
       "magic": ["4F54544F00"],

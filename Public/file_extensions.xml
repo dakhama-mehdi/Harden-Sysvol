@@ -4,21 +4,25 @@
 <Extension>*.bmp*</Extension>
 <Extension>*.bgi*</Extension>
 <Extension>*.cab*</Extension>
+<Extension>*.cfg*</Extension>
 <Extension>*.class*</Extension>
 <Extension>*.csproj*</Extension>
-<Extension>*.config*</Extension>
+<Extension>*.conf*</Extension>
 <Extension>*.csv*</Extension>
 <Extension>*.cer*</Extension>
 <Extension>*.crt*</Extension>
-<Extension>*.csr*</Extension>
+<Extension>*.csr*</Extension>:
+<Extension>*.cnf*</Extension>
 <Extension>*.db*</Extension>
 <Extension>*.der*</Extension>
 <Extension>*.doc*</Extension>
 <Extension>*.docx*</Extension>
 <Extension>*.dll*</Extension>
+<Extension>*.dtsx*</Extension>
 <Extension>*.exe*</Extension>
 <Extension>*.evt*</Extension>
 <Extension>*.evtx*</Extension>
+<Extension>*.fetchmailrc*</Extension>
 <Extension>*.gif*</Extension>
 <Extension>*.gz*</Extension>
 <Extension>*.html*</Extension>
@@ -27,6 +31,7 @@
 <Extension>*.kix*</Extension>
 <Extension>*.ico*</Extension>
 <Extension>*.ini*</Extension>
+<Extension>*.inf*</Extension>
 <Extension>*.jar*</Extension>
 <Extension>*.jpg*</Extension>
 <Extension>*.jpeg*</Extension>
@@ -39,15 +44,19 @@
 <Extension>*.odt*</Extension>
 <Extension>*.otf*</Extension>
 <Extension>*.ott*</Extension>
+<Extension>*.ora*</Extension>
 <Extension>*.p7b*</Extension>
 <Extension>*.p7c*</Extension>
+<Extension>*.passwd*</Extension>
 <Extension>*.pdf*</Extension>
 <Extension>*.pem*</Extension>
+<Extension>*.php*</Extension>
 <Extension>*.pfx*</Extension>
 <Extension>*.png*</Extension>
 <Extension>*.pol*</Extension>
 <Extension>*.pptx*</Extension>
 <Extension>*.ppt*</Extension>
+<Extension>*.ppe*</Extension>
 <Extension>*.py*</Extension>
 <Extension>*.ps1*</Extension>
 <Extension>*.psm1*</Extension>
@@ -70,6 +79,7 @@
 <Extension>*.vmdk*</Extension>
 <Extension>*.vbsx*</Extension>
 <Extension>*.webp*</Extension>
+<Extension>*.yml*</Extension>
 <Extension>*.zip*</Extension>
 <Extension>*.7z*</Extension>
 </FileExtensions>
@@ -88,8 +98,11 @@
 <Pattern>\bssh-key\b</Pattern>
 <Pattern>\btoken\b</Pattern>
 <Pattern>\blogin\b</Pattern>
+<Pattern>\bpass\b</Pattern>
 <Pattern>\bapikey\b</Pattern>
+<Pattern>/user:\S+\\\S+</Pattern>
 <Pattern>password</Pattern>
+<Pattern>runas</Pattern>
 <Pattern>net use .+ /user:.*</Pattern>
 <Pattern>net user( /add)? \S+ \S+( /add)?</Pattern>
 <Pattern>securestring</Pattern>
