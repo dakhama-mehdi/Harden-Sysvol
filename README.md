@@ -27,7 +27,7 @@ Harden‑Sysvol is a PowerShell module that audits Group Policy and analyzes the
 <a href="https://www.experts-exchange.com/articles/39474/Audit-and-identify-vulnerabilities-in-GPOs-SYSVOL.html" target="_blank">📄 Article</a> • 
 <a href="https://www.youtube.com/watch?v=lCEUoO39GtE&t=131s&ab_channel=IT-Connect" target="_blank">🎥 YouTube Demo</a>
 
-### 🔧 Main Features
+###  Main Features
 - 🔍 Scans for sensitive data (passwords, credential, hashes, IP addresses, etc.) across 40+ file extensions.
 
 - 🛡 Analyzes suspicious binaries (renamed EXEs, DLLs, MSI installers) among 180+ known types
