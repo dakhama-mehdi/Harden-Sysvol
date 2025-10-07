@@ -7,7 +7,7 @@
 </td>
 <td style="vertical-align: middle;">
 
-<h1>HardenSysvol : Audit the hidden risks in your GPO & SYSVOL folder</h1>
+<h1>Audit the hidden risks in your GPO & SYSVOL folder</h1>
 
 <a href="https://www.gnu.org/licenses/agpl-3.0">
   <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
