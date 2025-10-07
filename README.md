@@ -13,11 +13,10 @@ Audit the hidden risks in your GPO & SYSVOL folder
   <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
 </a>
 <img src="https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg" alt="PowerShell">
-<img src="https://img.shields.io/badge/Status-Completed-green" alt="Status">
 <img src="https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery" alt="Download">
+<img src="https://img.shields.io/badge/Status-Completed-green" alt="Status">
 <img src="https://img.shields.io/powershellgallery/v/Hardensysvol" alt="Version">
 <img src="https://img.shields.io/badge/Platform-Windows%2010%2F11%20%26%20Server-blue" alt="Platform">
-
 </td>
 </tr>
 </table>
