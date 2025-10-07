@@ -6,18 +6,25 @@
 
 </td>
 <td style="vertical-align: middle;">
-HardenSysvol : Audit the hidden risks in your GPO & SYSVOL folder
+
+<h1>HardenSysvol : Audit the hidden risks in your GPO & SYSVOL folder</h1>
+
+<a href="https://www.gnu.org/licenses/agpl-3.0">
+  <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
+</a>
+<img src="https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg" alt="PowerShell">
+<img src="https://img.shields.io/badge/Status-Completed-green" alt="Status">
+<img src="https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery" alt="Download">
+<img src="https://img.shields.io/powershellgallery/v/Hardensysvol" alt="Version">
+<img src="https://img.shields.io/badge/Platform-Windows%2010%2F11%20%26%20Server-blue" alt="Platform">
+
 </td>
 </tr>
 </table>
 
 
-![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
-![PowerShell](https://img.shields.io/badge/PowerShell-5.1.0%2B-blue.svg)
-![Status: Completed](https://img.shields.io/badge/Status-Completed-green)
-![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/Hardensysvol?color=orange&label=Download%20Powershell%20Gallery)
-![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/Hardensysvol)
-![Platform: Windows 10/11 & Server](https://img.shields.io/badge/Platform-Windows%2010%2F11%20%26%20Server-blue)
+
+
 
 
 
