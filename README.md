@@ -2,7 +2,7 @@
 <tr>
 <td style="width: 300px; vertical-align: middle;">
 
-<img src="https://github.com/user-attachments/assets/520b6eb7-bcd8-4fdd-9693-d0446be0972f" alt="HardenSysvol Logo" width="350" height="200">
+<img src="https://github.com/user-attachments/assets/520b6eb7-bcd8-4fdd-9693-d0446be0972f" alt="HardenSysvol Logo" width="600" height="200">
 
 </td>
 <td style="vertical-align: middle;">
