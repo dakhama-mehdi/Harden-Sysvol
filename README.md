@@ -52,8 +52,8 @@ Invoke-HardenSysvol
 ````
 ### Frequently Used Example
 ```powershell
-Invoke-HardenSysvol -Addpattern admin -Addextension adml,admx,adm
-Invoke-HardenSysvol -Allextensions
+Invoke-HardenSysvol -Addpattern 'admin'
+Invoke-HardenSysvol -Allextensions -Checkshares
 Invoke-HardenSysvol -Allextensions -ignoreextension adml,admx -Maxfilesize 1 -Maxbinarysize 1
 Invoke-HardenSysvol -Allextensions -Includepolicydefinitions -Savepath C:\temp
 Invoke-HardenSysvol -ExportCSV C:\temp\export.csv
