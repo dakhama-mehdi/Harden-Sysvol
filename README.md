@@ -55,7 +55,7 @@ Invoke-HardenSysvol
 Invoke-HardenSysvol -Addpattern admin -Addextension adml,admx,adm
 Invoke-HardenSysvol -Allextensions
 Invoke-HardenSysvol -Allextensions -ignoreextension adml,admx -Maxfilesize 1 -Maxbinarysize 1
-Invoke-HardenSysvol -Allextensions -Includepolicydefinitions
+Invoke-HardenSysvol -Allextensions -Includepolicydefinitions -Savepath C:\temp
 Invoke-HardenSysvol -ExportCSV C:\temp\export.csv
 ````
 ### Offline installation
@@ -72,9 +72,10 @@ powershell.exe -ExecutionPolicy Bypass Invoke-hardensysvol
 | Parameter      | Explanation                                                                                               | Example                                         |
 |----------------|-----------------------------------------------------------------------------------------------------------|-------------------------------------------------|
 | Addpattern     | Adds custom keywords to search for that are not present by default.                                       | `-Addpattern admins,@mydomain,hack`             |
-| Removepattern  | Removes a keyword from the default search list.                                                           | `-Removepattern ipv4,sha1,password`             |
-| IncludePolicydefinitions  | Scan on policydefinitions folder contains the additional admx & adml                            | `-IncludePolicydefinitions`                     |
+| Removepattern  | Removes a keyword from the default search list.                                                           | `-Removepattern ipv4,Sha1,password`             |
+| IncludePolicydefinitions  | Scan on policydefinitions folder contains the additional admx & adml                           | `-IncludePolicydefinitions`                     |
 | Addextension   | Adds an additional file extension to include in the search.                                               | `-Addextension adml,admx,adm`                   |
+| CheckShares    | Checks shares on all Domains controllers, list unsecure share like temp or applications, ignore default share | `-CheckShares`                              |
 | Ignoreextension| Excludes a default extension from the search.                                                             | `-Ignoreextension pdf,bat,ps1`                  |
 | Allextensions  | Scans all file types without any exceptions.                                                              | `-Allextensions`                                |
 | DnsDomain      | Targets a specific child domain or Domain Controller (DC).                                                | `-Dnsdomain dc-2` or `-Dnsdomain domain.local`  |
@@ -82,6 +83,7 @@ powershell.exe -ExecutionPolicy Bypass Invoke-hardensysvol
 | SavePath       | Save rapport on custom path other then temp by default                                                    | `-SavePath C:\Folder\`                          |
 | Maxfilesize    | Maxfilesize scripts and Maxbinarysize limit to not exceed in MB, by default 10MB for file and 50MB binary | `-Maxfilesize 5 -Maxbinarysize 10  `            |
 | ExportCSV      | Export CSV files without generate the html, only to add it soc or siem                                    | `-Exportcsv C:\Folder\Filename.csv  `           |
+| Silent         | Do not open automaticaly report from navigator.                                                           | `-Silent  `                                     |
 
 ## How It Works
 HardenSysvol first analyzes the shared folders on the Domain Controller where it is run, or on a specified target defined by parameters. For each file, it checks against a list of 180 default extensions. If a file, such as a .doc file, is renamed to .exe (or vice versa), it will trigger an error, making it difficult for suspicious files to bypass detection.
